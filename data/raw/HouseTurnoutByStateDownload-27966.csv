@@ -1,0 +1,10 @@
+2022 Federal Election House of Representatives Turnout By State [Event:27966 Phase:FinalResults Generated:2022-07-19T10:29:59 Cycle:06578790-03c6-4cf4-b786-103cfb915abd Created:2022-07-19T10:24:10 Environment:PROD Site:CANBERRA Server:TALLYROOM Version:10.9.9.0]
+StateAb,StateNm,Enrolment,Turnout,TurnoutPercentage,TurnoutSwing
+NSW,New South Wales,5467993,4959584,90.7,-1.46
+VIC,Victoria,4339960,3931607,90.59,-2.03
+QLD,Queensland,3501287,3086758,88.16,-3.06
+WA,Western Australia,1772065,1559282,87.99,-2.06
+SA,South Australia,1270400,1157008,91.07,-2
+TAS,Tasmania,401852,371432,92.43,-1.91
+ACT,Australian Capital Territory,314025,289113,92.07,-1.08
+NT,Northern Territory,145851,106595,73.08,-4.86

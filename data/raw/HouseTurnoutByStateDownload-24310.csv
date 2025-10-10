@@ -1,0 +1,10 @@
+2019 Federal Election House of Representatives Turnout By State [Event:24310 Phase:FinalResults Generated:2019-07-30T11:10:44 Cycle:02109509-c159-4199-88f6-389818be8a1c Created:2019-07-26T10:57:31 Environment:PROD Site:CANBERRA Server:TALLYROOM Version:10.7.17.56581]
+StateAb,StateNm,Enrolment,Turnout,TurnoutPercentage,TurnoutSwing
+NSW,New South Wales,5294468,4879387,92.16,0.67
+VIC,Victoria,4184076,3875458,92.62,1.48
+QLD,Queensland,3262898,2976308,91.22,0.05
+WA,Western Australia,1646262,1482449,90.05,1.67
+SA,South Australia,1210817,1126850,93.07,1.26
+TAS,Tasmania,385816,363962,94.34,0.75
+ACT,Australian Capital Territory,295847,275591,93.15,0.99
+NT,Northern Territory,139359,108611,77.94,-1.07

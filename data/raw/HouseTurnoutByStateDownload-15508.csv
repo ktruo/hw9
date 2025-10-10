@@ -1,0 +1,10 @@
+2010 Federal Election House of Representatives Turnout By State [Event:15508 Phase:FinalResults Generated:2013-01-22T15:02:22 Cycle:109e02bb-5f15-4808-984f-b47255b191fb Created:2013-01-22T14:55:43 Environment:PROD Site:PARKES Server:NTR01 Version:6.0.10.10009]
+StateAb,StateNm,Enrolment,Turnout,TurnoutPercentage,TurnoutSwing
+NSW,New South Wales,4610795,4303081,93.33,-1.66
+VIC,Victoria,3561873,3329883,93.49,-1.68
+QLD,Queensland,2719360,2521574,92.73,-1.68
+WA,Western Australia,1362534,1264968,92.84,-0.42
+SA,South Australia,1104698,1036514,93.83,-1.59
+TAS,Tasmania,358609,340943,95.07,-0.69
+ACT,Australian Capital Territory,247941,234623,94.63,-1.22
+NT,Northern Territory,121059,100081,82.67,-3.86

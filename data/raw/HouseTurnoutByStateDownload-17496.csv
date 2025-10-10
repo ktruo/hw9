@@ -1,0 +1,10 @@
+2013 Federal Election House of Representatives Turnout By State [Event:17496 Phase:FinalResults Generated:2014-10-28T11:21:35 Cycle:570ee0da-3d7a-4f7e-8aa1-3c32a4f287ed Created:2014-05-16T14:24:09 Environment:PROD Site:PARKES Server:ACT01 Version:9.1.17.21449]
+StateAb,StateNm,Enrolment,Turnout,TurnoutPercentage,TurnoutSwing
+NSW,New South Wales,4817504,4494835,93.3,-0.03
+VIC,Victoria,3720640,3474926,93.4,-0.09
+QLD,Queensland,2843100,2659655,93.55,0.82
+WA,Western Australia,1453813,1338536,92.07,-0.77
+SA,South Australia,1130572,1056684,93.46,-0.36
+TAS,Tasmania,363331,344186,94.73,-0.34
+ACT,Australian Capital Territory,265346,251120,94.64,0.01
+NT,Northern Territory,129079,106128,82.22,-0.45

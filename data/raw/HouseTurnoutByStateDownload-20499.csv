@@ -1,0 +1,10 @@
+2016 Federal Election House of Representatives Turnout By State [Event:20499 Phase:FinalResults Generated:2017-05-11T17:34:39 Cycle:a45ea4bc-bff6-48cb-94c5-1bbaae0c7c0d Created:2017-05-11T17:29:15 Environment:PROD Site:CANBERRA Server:TALLYROOM Version:10.5.84.43192]
+StateAb,StateNm,Enrolment,Turnout,TurnoutPercentage,TurnoutSwing
+NSW,New South Wales,5084274,4651399,91.49,-1.82
+VIC,Victoria,3963992,3612823,91.14,-2.26
+QLD,Queensland,3074422,2802951,91.17,-2.38
+WA,Western Australia,1577215,1394006,88.38,-2.01
+SA,South Australia,1183004,1086171,91.81,-1.65
+TAS,Tasmania,373470,349549,93.59,-1.14
+ACT,Australian Capital Territory,282045,259927,92.16,-2.51
+NT,Northern Territory,133129,105190,79.01,-3.21
