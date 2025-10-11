@@ -2,101 +2,181 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Australia TPP 2022 – Choropleth</title>
+  <title>Australian Elections Visualisation</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- Vega, Vega-Lite, and vega-embed via CDN -->
+
+  <!-- Vega, Vega-Lite, Vega-Embed via CDN -->
   <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+
   <style>
-    body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto; background:#111; color:#eee; }
-    .wrap { max-width: 1100px; margin: 24px auto; padding: 0 16px; }
-    h1 { font-size: 1.6rem; margin: 0 0 8px; }
-    p { color:#aaa; margin: 6px 0 16px; }
-    #vis { background:#fff; border-radius: 10px; padding: 8px; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto;
+      background: #111;
+      color: #eee;
+    }
+    .wrap {
+      max-width: 1100px;
+      margin: 24px auto;
+      padding: 0 16px;
+    }
+    h1, h2 {
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    p {
+      color: #aaa;
+      margin-top: 0;
+      margin-bottom: 20px;
+    }
+    #vis, #vis-turnout {
+      background: #fff;
+      border-radius: 10px;
+      padding: 8px;
+      margin-bottom: 40px;
+    }
     a { color: #8ab4f8; }
   </style>
 </head>
+
 <body>
   <div class="wrap">
+
+    <!-- ===================== MAP VISUALISATION ===================== -->
     <h1>Two-Party-Preferred (TPP), House of Representatives, 2022</h1>
-    <p>Colour shows % TPP relative to 50%. Red &gt; 50% ALP; Blue &gt; 50% Coalition. Hover for details.
+    <p>
+      Colour shows % TPP relative to 50%.<br>
+      Red &gt; 50% ALP; Blue &gt; 50% Coalition. Hover for details.<br>
       Data: <a href="https://results.aec.gov.au/27966/website/HouseDownloadsMenu-27966-Csv.htm">AEC</a>,
       boundaries: <a href="https://data.gov.au/data/dataset/commonwealth-electoral-divisions-as-at-2-august-2021">data.gov.au</a>.
     </p>
     <div id="vis"></div>
+
+    <!-- ===================== TURNOUT LINE CHART ===================== -->
+    <h2>Voter turnout over time (filter by state)</h2>
+    <p>Use the dropdown to filter; choose “All” to show every state.</p>
+    <div id="vis-turnout"></div>
   </div>
-  
+
   <script>
-const spec = {
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "width": 1000,
-  "height": 620,
-  "background": "white",
-  "projection": {"type": "mercator", "center": [134, -26], "scale": 850},
+  // ===================== MAP SPEC =====================
+  const mapSpec = {
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 1000,
+    "height": 620,
+    "background": "white",
+    "projection": { "type": "mercator", "center": [134, -26], "scale": 850 },
 
-  "data": {
-    "url": "data/ced_2021.geojson",
-    "format": {"type": "json","property": "features"}
-  },
-
-  "transform": [
-  {
-    // use the GeoJSON property Elect_div
-    "calculate": "datum.properties.Elect_div",
-    "as": "DivisionNameGeo"
-  },
-  {
-    // join CSV by DivisionNm
-    "lookup": "DivisionNameGeo",
-    "from": {
-      "data": {"url": "data/tpp_2022.csv"},
-      "key": "DivisionNm",
-      "fields": [
-        "Australian Labor Party Percentage",
-        "Liberal/National Coalition Percentage",
-        "StateAb"
-      ]
-    }
-  },
-  {
-    "calculate": "isValid(datum['Australian Labor Party Percentage']) ? datum['Australian Labor Party Percentage'] - 50 : null",
-    "as": "margin_alp"
-  },
-  {
-    "calculate": "isValid(datum['Australian Labor Party Percentage']) ? (datum['Australian Labor Party Percentage'] >= 50 ? 'ALP' : 'Coalition') : 'No data'",
-    "as": "winner"
-  }
-],
-
-
-  "mark": {"type": "geoshape", "stroke": "#dddddd", "strokeWidth": 0.4},
-
-  "encoding": {
-    "color": {
-      "field": "margin_alp",
-      "type": "quantitative",
-      "title": "TPP margin (ALP – 50%)",
-      "scale": {"scheme": "redblue", "domain": [-20, 0, 20]},
-      "legend": {"format": "+.0f", "labelExpr": "datum.value + '%'"}
+    "data": {
+      "url": "data/ced_2021.geojson?v=2",
+      "format": { "type": "json", "property": "features" }
     },
-    "tooltip": [
-      {"field": "DivisionNameGeo", "type": "nominal", "title": "Division"},
-      {"field": "StateAb", "type": "nominal", "title": "State"},
-      {"field": "winner", "type": "nominal", "title": "Winner"},
-      {"field": "Australian Labor Party Percentage", "type": "quantitative", "title": "ALP TPP", "format": ".1f"},
-      {"field": "Liberal/National Coalition Percentage", "type": "quantitative", "title": "Coalition TPP", "format": ".1f"}
-    ]
-  },
 
-  "config": {
-    "view": {"stroke": null},
-    "legend": {"titleFontSize": 12, "labelFontSize": 11}
-  }
-};
+    "transform": [
+      { "calculate": "datum.properties.Elect_div", "as": "DivisionNameGeo" },
+      {
+        "lookup": "DivisionNameGeo",
+        "from": {
+          "data": { "url": "data/tpp_2022.csv" },
+          "key": "DivisionNm",
+          "fields": [
+            "Australian Labor Party Percentage",
+            "Liberal/National Coalition Percentage",
+            "StateAb"
+          ]
+        }
+      },
+      {
+        "calculate": "isValid(datum['Australian Labor Party Percentage']) ? datum['Australian Labor Party Percentage'] - 50 : null",
+        "as": "margin_alp"
+      },
+      {
+        "calculate": "isValid(datum['Australian Labor Party Percentage']) ? (datum['Australian Labor Party Percentage'] >= 50 ? 'ALP' : 'Coalition') : 'No data'",
+        "as": "winner"
+      }
+    ],
 
-vegaEmbed("#vis", spec, {actions:false});
-</script>
+    "mark": { "type": "geoshape", "stroke": "#dddddd", "strokeWidth": 0.4 },
+
+    "encoding": {
+      "color": {
+        "field": "margin_alp",
+        "type": "quantitative",
+        "title": "TPP margin (ALP – 50%)",
+        "scale": { "scheme": "redblue", "domain": [-20, 0, 20] },
+        "legend": { "format": "+.0f", "labelExpr": "datum.value + '%'" }
+      },
+      "tooltip": [
+        { "field": "DivisionNameGeo", "type": "nominal", "title": "Division" },
+        { "field": "StateAb", "type": "nominal", "title": "State" },
+        { "field": "winner", "type": "nominal", "title": "Winner" },
+        { "field": "Australian Labor Party Percentage", "type": "quantitative", "title": "ALP TPP", "format": ".1f" },
+        { "field": "Liberal/National Coalition Percentage", "type": "quantitative", "title": "Coalition TPP", "format": ".1f" }
+      ]
+    },
+
+    "config": {
+      "view": { "stroke": null },
+      "legend": { "titleFontSize": 12, "labelFontSize": 11 }
+    }
+  };
+
+  vegaEmbed("#vis", mapSpec, { actions: false });
+
+
+  // ===================== TURNOUT LINE CHART SPEC =====================
+  const turnoutSpec = {
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 1000,
+    "height": 420,
+    "background": "white",
+
+    "params": [
+      {
+        "name": "stateFilter_turnout",
+        "value": "All",
+        "bind": {
+          "input": "select",
+          "options": ["All","NSW","VIC","QLD","WA","SA","TAS","ACT","NT"],
+          "name": "State: "
+        }
+      }
+    ],
+
+    "data": { "url": "data/turnout_by_state.csv?v=14", "format": { "type": "csv" } },
+
+    "transform": [
+      { "filter": "stateFilter_turnout == 'All' || datum.State == stateFilter_turnout" }
+    ],
+
+    "mark": { "type": "line", "point": true },
+    "encoding": {
+      "x": { "field": "Year", "type": "quantitative", "title": "Election year" },
+      "y": { "field": "TurnoutPct", "type": "quantitative", "title": "Turnout (%)" },
+      "color": {
+        "field": "State", "type": "nominal", "title": "State/Territory",
+        "sort": ["NSW","VIC","QLD","WA","SA","TAS","ACT","NT"]
+      },
+      "tooltip": [
+        { "field": "Year", "type": "quantitative" },
+        { "field": "State", "type": "nominal" },
+        { "field": "TurnoutPct", "type": "quantitative", "format": ".2f", "title": "Turnout (%)" }
+      ]
+    },
+
+    "config": {
+      "view": { "stroke": null },
+      "axis": { "labelFontSize": 11, "titleFontSize": 12 },
+      "legend": { "titleFontSize": 12, "labelFontSize": 11 }
+    }
+  };
+
+  vegaEmbed("#vis-turnout", turnoutSpec, { actions: false });
+  </script>
 
 </body>
 </html>
+
+
