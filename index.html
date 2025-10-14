@@ -181,36 +181,42 @@
   // Prefer a lighter TopoJSON if available; fall back to existing spec
   (async () => {
     try {
-      const [topoResp, specResp] = await Promise.allSettled([
-        fetch("data/ced_2021.topo.json"),
-        fetch("specs/map.json?v=3")
-      ]);
+      const tryTopo = new URLSearchParams(window.location.search).get("topo") === "1";
 
-      let specJson = null;
-      if (specResp.status === "fulfilled" && specResp.value.ok) {
-        specJson = await specResp.value.json();
-        // rewrite any data URLs to absolute
-        specJson = await fetchAndRewriteSpec("specs/map.json?v=3");
-      }
+      if (tryTopo) {
+        const [topoResp, specResp] = await Promise.allSettled([
+          fetch("data/ced_2021.topo.json"),
+          fetch("specs/map.json?v=3")
+        ]);
 
-      // If TopoJSON exists, detect layer name and use it
-      if (topoResp.status === "fulfilled" && topoResp.value.ok) {
-        const topo = await topoResp.value.json();
-        const layerNames = topo && topo.objects ? Object.keys(topo.objects) : [];
-        const featureName = layerNames.length ? layerNames[0] : null;
-        if (featureName && specJson) {
-          specJson.data = {
-            url: new URL("data/ced_2021.topo.json", pageBase).href,
-            format: { type: "topojson", feature: featureName }
-          };
+        let specJson = null;
+        if (specResp.status === "fulfilled" && specResp.value.ok) {
+          // rewrite any data URLs to absolute
+          specJson = await fetchAndRewriteSpec("specs/map.json?v=3");
+        }
+
+        if (topoResp.status === "fulfilled" && topoResp.value.ok && specJson) {
+          const topo = await topoResp.value.json();
+          const layerNames = topo && topo.objects ? Object.keys(topo.objects) : [];
+          const featureName = layerNames.length ? layerNames[0] : null;
+          if (featureName) {
+            specJson.data = {
+              url: new URL("data/ced_2021.topo.json", pageBase).href,
+              format: { type: "topojson", feature: featureName }
+            };
+            return vegaEmbed("#vis", specJson, { actions: false, loader: loaderOpts });
+          }
+        }
+        // Fallback to GeoJSON if topo not available/usable
+        if (specJson) {
           return vegaEmbed("#vis", specJson, { actions: false, loader: loaderOpts });
-      }
-    }
-
-      // Fallback: use fetched+rewritten spec (GeoJSON)
-      if (specJson) {
+        }
+      } else {
+        // Default path: do not attempt TopoJSON (avoids 404 noise), just use rewritten GeoJSON spec
+        const specJson = await fetchAndRewriteSpec("specs/map.json?v=3");
         return vegaEmbed("#vis", specJson, { actions: false, loader: loaderOpts });
       }
+
       // If spec fetch failed entirely, last resort
       return vegaEmbed("#vis", "specs/map.json?v=3", { actions: false });
     } catch (err) {
