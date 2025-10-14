@@ -136,6 +136,7 @@
 
   // Load smaller charts first and log any failures for debugging on GitHub Pages
   const loaderOpts = undefined; // not relying on loader baseURL; rewrite URLs to absolute
+  const pageBase = new URL('./', window.location.href).href; // ensures trailing slash, e.g., .../hw9/
 
   async function fetchAndRewriteSpec(url) {
     const res = await fetch(url, { cache: "no-cache" });
@@ -152,7 +153,7 @@
           }
           if (p.startsWith("data/")) {
             try {
-              node[k] = new URL(p, window.location.href).href;
+              node[k] = new URL(p, pageBase).href;
             } catch (_) {
               node[k] = p;
             }
@@ -199,7 +200,7 @@
         const featureName = layerNames.length ? layerNames[0] : null;
         if (featureName && specJson) {
           specJson.data = {
-            url: "data/ced_2021.topo.json",
+            url: new URL("data/ced_2021.topo.json", pageBase).href,
             format: { type: "topojson", feature: featureName }
           };
           return vegaEmbed("#vis", specJson, { actions: false, loader: loaderOpts });
