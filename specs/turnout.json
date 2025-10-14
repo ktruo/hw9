@@ -1,0 +1,41 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "autosize": { "type": "fit-x", "contains": "padding" },
+  "width": "container",
+  "height": 380,
+  "background": "white",
+  "params": [
+    {
+      "name": "stateFilter_turnout",
+      "value": "All",
+      "bind": {
+        "input": "select",
+        "options": ["All", "NSW", "VIC", "QLD", "WA", "SA", "TAS", "ACT", "NT"],
+        "name": "State: "
+      }
+    }
+  ],
+  "data": { "url": "../data/turnout_by_state.csv?v=14", "format": { "type": "csv" } },
+  "transform": [
+    { "filter": "stateFilter_turnout == 'All' || datum.State == stateFilter_turnout" }
+  ],
+  "mark": { "type": "line", "point": true },
+  "encoding": {
+    "x": { "field": "Year", "type": "quantitative", "title": "Election year" },
+    "y": { "field": "TurnoutPct", "type": "quantitative", "title": "Turnout (%)" },
+    "color": {
+      "field": "State", "type": "nominal", "title": "State/Territory",
+      "sort": ["NSW", "VIC", "QLD", "WA", "SA", "TAS", "ACT", "NT"]
+    },
+    "tooltip": [
+      { "field": "Year", "type": "quantitative" },
+      { "field": "State", "type": "nominal" },
+      { "field": "TurnoutPct", "type": "quantitative", "format": ".2f", "title": "Turnout (%)" }
+    ]
+  },
+  "config": {
+    "view": { "stroke": null },
+    "axis": { "labelFontSize": 11, "titleFontSize": 12 },
+    "legend": { "titleFontSize": 12, "labelFontSize": 11 }
+  }
+}

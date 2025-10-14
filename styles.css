@@ -1,0 +1,159 @@
+/* =====================
+   Australian Elections Visualisation — Styles
+   Focus: clean typography, dark theme, responsive layout,
+   and card-style containers for charts and controls.
+   ===================== */
+
+:root {
+  --bg: #ffffff;
+  --bg-alt: #f7f8fa;
+  --text: #111111;
+  --muted: #555a64;
+  --link: #0b57d0;
+  --link-hover: #0842a0;
+  --card: #ffffff;      /* white cards for chart contrast */
+  --border: #e0e3e7;
+  --shadow: 0 1px 2px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.12);
+}
+
+* { box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.site-header {
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+  margin: 0 0 12px;
+  background: linear-gradient(180deg, rgba(0,0,0,0.03), rgba(0,0,0,0));
+}
+
+.site-title {
+  margin: 18px 0 14px;
+  font-size: clamp(24px, 4vw, 36px);
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: #111;
+  text-align: center;
+}
+
+.wrap {
+  max-width: 1500px;
+  margin: 28px auto 64px;
+  padding: 0 20px;
+}
+
+h1, h2 {
+  margin: 0 0 8px;
+  color: #111;
+}
+
+h1 {
+  font-size: clamp(22px, 3.4vw, 30px);
+  letter-spacing: 0.2px;
+}
+
+h2 {
+  font-size: clamp(18px, 2.6vw, 22px);
+  font-weight: 600;
+  color: #222;
+}
+
+p {
+  margin: 0 0 18px;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+a {
+  color: var(--link);
+  text-decoration: none;
+}
+
+a:hover { color: var(--link-hover); text-decoration: underline; }
+
+/* Sections and grid layout */
+.viz-section { margin: 8px 0 32px; }
+
+.grid-two {
+  display: grid;
+  /* Ensure the chart column can fully contain a 1000px-wide map + padding/border */
+  grid-template-columns: minmax(260px, 1fr) minmax(1040px, 2fr); /* text | chart */
+  gap: 16px 24px;
+  align-items: start;
+}
+
+.text, .chart { min-width: 0; }
+.text p, .text a { overflow-wrap: anywhere; word-break: break-word; hyphens: auto; }
+
+/* Card containers for charts */
+#vis, #vis-turnout {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  margin: 16px 0 40px;
+  box-shadow: var(--shadow);
+  overflow: visible; /* avoid internal scrollbars for fixed-size charts */
+  width: 100%;
+}
+
+/* Vega embed container niceties */
+.vega-embed, .vega-embed details,
+.vega-embed summary { color: inherit; }
+
+/* Avoid scaling the Vega canvas via CSS (prevents tooltip offset) */
+
+.vega-embed .vega-actions { display: none !important; }
+
+/* Control styling for Vega-Lite parameter bind (state dropdown) */
+/* The bound controls render inside the chart container. */
+#vis-turnout label {
+  display: inline-block;
+  margin: 4px 8px 8px 2px;
+  color: #5b6475;
+  font-weight: 600;
+}
+
+#vis-turnout select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: #f8fafc;
+  color: #1f2937;
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 14px;
+  line-height: 1.2;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.02) inset;
+}
+
+#vis-turnout select:focus {
+  outline: none;
+  border-color: #86b7fe;
+  box-shadow: 0 0 0 3px rgba(13,110,253,0.25);
+}
+
+/* Subtle separation between map description and chart */
+.wrap p + #vis { margin-top: 12px; }
+
+/* Responsive tweaks */
+@media (max-width: 900px) {
+  .wrap { padding: 0 16px; }
+  .grid-two { grid-template-columns: 1fr; }
+  #vis, #vis-turnout { padding: 10px; }
+}
+
+@media (max-width: 600px) {
+  h1 { font-size: 20px; }
+  h2 { font-size: 17px; }
+  #vis, #vis-turnout { border-radius: 10px; padding: 8px; }
+}

@@ -1,0 +1,65 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 1000,
+  "height": 620,
+  "background": "white",
+  "projection": { "type": "mercator", "center": [134, -26], "scale": 850 },
+  "data": {
+    "url": "../data/ced_2021.geojson?v=2",
+    "format": { "type": "json", "property": "features" }
+  },
+  "transform": [
+    { "calculate": "datum.properties.Elect_div", "as": "DivisionNameGeo" },
+    {
+      "lookup": "DivisionNameGeo",
+      "from": {
+        "data": { "url": "../data/tpp_2022.csv" },
+        "key": "DivisionNm",
+        "fields": [
+          "Australian Labor Party Percentage",
+          "Liberal/National Coalition Percentage",
+          "StateAb"
+        ]
+      }
+    },
+    {
+      "calculate": "isValid(datum['Australian Labor Party Percentage']) ? datum['Australian Labor Party Percentage'] - 50 : null",
+      "as": "margin_alp"
+    },
+    {
+      "calculate": "isValid(datum['Australian Labor Party Percentage']) ? (datum['Australian Labor Party Percentage'] >= 50 ? 'ALP' : 'Coalition') : 'No data'",
+      "as": "winner"
+    },
+    {
+      "calculate": "(isValid(datum['Australian Labor Party Percentage']) && isValid(datum['Liberal/National Coalition Percentage'])) ? datum['Australian Labor Party Percentage'] - datum['Liberal/National Coalition Percentage'] : null",
+      "as": "margin_alp_coalition"
+    }
+  ],
+  "mark": { "type": "geoshape", "stroke": "#dddddd", "strokeWidth": 0.4 },
+  "encoding": {
+    "color": {
+      "field": "margin_alp_coalition",
+      "type": "quantitative",
+      "title": "TPP margin (ALP - Coalition)",
+      "scale": {
+        "scheme": "redblue",
+        "domain": [-25, 0, 25],
+        "reverse": true,
+        "clamp": true
+      },
+      "legend": { "format": "+.0f", "labelExpr": "datum.value + '%'" }
+    },
+    "tooltip": [
+      { "field": "DivisionNameGeo", "type": "nominal", "title": "Division" },
+      { "field": "StateAb", "type": "nominal", "title": "State" },
+      { "field": "winner", "type": "nominal", "title": "Winner" },
+      { "field": "Australian Labor Party Percentage", "type": "quantitative", "title": "ALP TPP", "format": ".1f" },
+      { "field": "Liberal/National Coalition Percentage", "type": "quantitative", "title": "Coalition TPP", "format": ".1f" },
+      { "field": "margin_alp_coalition", "type": "quantitative", "title": "Margin (ALP - Coalition)", "format": ".1f" }
+    ]
+  },
+  "config": {
+    "view": { "stroke": null },
+    "legend": { "titleFontSize": 12, "labelFontSize": 11 }
+  }
+}
