@@ -146,11 +146,15 @@
       for (const k of Object.keys(node)) {
         const v = node[k];
         if (k === "url" && typeof v === "string") {
-          if (v.startsWith("../data/") || v.startsWith("data/")) {
+          let p = v;
+          if (p.startsWith("../data/")) {
+            p = p.replace("../data/", "data/");
+          }
+          if (p.startsWith("data/")) {
             try {
-              node[k] = new URL(v, window.location.href).href;
+              node[k] = new URL(p, window.location.href).href;
             } catch (_) {
-              node[k] = v;
+              node[k] = p;
             }
           }
         } else if (typeof v === "object") {
