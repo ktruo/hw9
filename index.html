@@ -135,7 +135,7 @@
   };
 
   // Load smaller charts first and log any failures for debugging on GitHub Pages
-  const loaderOpts = { baseURL: new URL("./", window.location.href).href };
+  const loaderOpts = undefined; // not relying on loader baseURL; rewrite URLs to absolute
 
   async function fetchAndRewriteSpec(url) {
     const res = await fetch(url, { cache: "no-cache" });
@@ -145,8 +145,14 @@
       if (!node || typeof node !== "object") return;
       for (const k of Object.keys(node)) {
         const v = node[k];
-        if (k === "url" && typeof v === "string" && v.startsWith("../data/")) {
-          node[k] = v.replace("../data/", "data/");
+        if (k === "url" && typeof v === "string") {
+          if (v.startsWith("../data/") || v.startsWith("data/")) {
+            try {
+              node[k] = new URL(v, window.location.href).href;
+            } catch (_) {
+              node[k] = v;
+            }
+          }
         } else if (typeof v === "object") {
           rewrite(v);
         }
@@ -178,6 +184,8 @@
       let specJson = null;
       if (specResp.status === "fulfilled" && specResp.value.ok) {
         specJson = await specResp.value.json();
+        // rewrite any data URLs to absolute
+        specJson = await fetchAndRewriteSpec("specs/map.json?v=3");
       }
 
       // If TopoJSON exists, detect layer name and use it
@@ -190,12 +198,16 @@
             url: "data/ced_2021.topo.json",
             format: { type: "topojson", feature: featureName }
           };
-          return vegaEmbed("#vis", specJson, { actions: false });
-        }
+          return vegaEmbed("#vis", specJson, { actions: false, loader: loaderOpts });
       }
+    }
 
-      // Fallback: use existing external spec (GeoJSON)
-      return vegaEmbed("#vis", "specs/map.json?v=3", { actions: false, loader: loaderOpts });
+      // Fallback: use fetched+rewritten spec (GeoJSON)
+      if (specJson) {
+        return vegaEmbed("#vis", specJson, { actions: false, loader: loaderOpts });
+      }
+      // If spec fetch failed entirely, last resort
+      return vegaEmbed("#vis", "specs/map.json?v=3", { actions: false });
     } catch (err) {
       console.error("map embed error", err);
     }
