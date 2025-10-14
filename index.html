@@ -134,7 +134,11 @@
     }
   };
 
-  vegaEmbed("#vis", "specs/map.json?v=3", { actions: false });
+  // Load smaller charts first and log any failures for debugging on GitHub Pages
+  vegaEmbed("#vis-turnout", "specs/turnout.json?v=2", { actions: false }).catch(err => console.error("turnout embed error", err));
+  vegaEmbed("#vis-seats", "specs/seats_stacked.json?v=6", { actions: false }).catch(err => console.error("seats embed error", err));
+  vegaEmbed("#vis-sankey", "specs/bipartite_flow.json?v=9", { actions: false }).catch(err => console.error("sankey embed error", err));
+  vegaEmbed("#vis", "specs/map.json?v=3", { actions: false }).catch(err => console.error("map embed error", err));
 
 
   // ===================== TURNOUT LINE CHART SPEC =====================
@@ -184,9 +188,7 @@
     }
   };
 
-  vegaEmbed("#vis-turnout", "specs/turnout.json?v=2", { actions: false });
-  vegaEmbed("#vis-seats", "specs/seats_stacked.json?v=6", { actions: false });
-  vegaEmbed("#vis-sankey", "specs/bipartite_flow.json?v=9", { actions: false });
+  // (moved above with error handlers)
   </script>
 
 </body>
