@@ -66,6 +66,14 @@ h2 {
   color: #222;
 }
 
+/* Make second graph title (h2 in viz-section) match first graph title styling */
+.viz-section h2 {
+  font-size: clamp(22px, 3.4vw, 30px);
+  letter-spacing: 0.2px;
+  color: #111;
+  font-weight: 700;
+}
+
 p {
   margin: 0 0 18px;
   color: var(--muted);
@@ -94,7 +102,7 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
 .text p, .text a { overflow-wrap: anywhere; word-break: break-word; hyphens: auto; }
 
 /* Card containers for charts */
-#vis, #vis-turnout {
+#vis, #vis-turnout, #vis-seats {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 12px;
@@ -113,16 +121,18 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
 
 .vega-embed .vega-actions { display: none !important; }
 
-/* Control styling for Vega-Lite parameter bind (state dropdown) */
-/* The bound controls render inside the chart container. */
-#vis-turnout label {
+/* Control styling for Vega-Lite parameter binds (dropdowns) */
+/* Apply to both turnout and seats charts */
+#vis-turnout label,
+#vis-seats label {
   display: inline-block;
   margin: 4px 8px 8px 2px;
   color: #5b6475;
   font-weight: 600;
 }
 
-#vis-turnout select {
+#vis-turnout select,
+#vis-seats select {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -136,14 +146,17 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
   box-shadow: 0 1px 0 rgba(0,0,0,0.02) inset;
 }
 
-#vis-turnout select:focus {
+#vis-turnout select:focus,
+#vis-seats select:focus {
   outline: none;
   border-color: #86b7fe;
   box-shadow: 0 0 0 3px rgba(13,110,253,0.25);
 }
 
-/* Subtle separation between map description and chart */
-.wrap p + #vis { margin-top: 12px; }
+/* Subtle separation between text and charts */
+.wrap p + #vis,
+.wrap p + #vis-turnout,
+.wrap p + #vis-seats { margin-top: 12px; }
 
 /* Responsive tweaks */
 @media (max-width: 900px) {

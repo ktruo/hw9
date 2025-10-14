@@ -17,6 +17,7 @@
   <header class="site-header">
     <div class="wrap">
       <h1 class="site-title">Australia Votes: A Nation Divided and Engaged</h1>
+      <p class="site-intro">Every few years, Australians head to the polls to choose who will lead the nation. Voting has become a familiar ritual, yet each election tells a new story about the country’s changing politics and levels of participation. This visual story looks at both where votes were won and how many Australians took part. Through an interactive map of the 2022 election and a line chart of turnout over time, it highlights the patterns, contrasts, and trends that shape Australia's democracy.</p>
     </div>
   </header>
 
@@ -28,11 +29,11 @@
     <div class="grid-two"><div class="text">
     <p>
       Colour shows % TPP relative to 50%.<br>
-      Blue &gt; 50% ALP; Red &gt; 50% Coalition. Hover for details.<br>
+      Red &gt; 50% ALP; Blue &gt; 50% Coalition. Hover for details.<br>
       Data: <a href="https://results.aec.gov.au/27966/website/HouseDownloadsMenu-27966-Csv.htm">AEC</a>,
       boundaries: <a href="https://data.gov.au/data/dataset/commonwealth-electoral-divisions-as-at-2-august-2021">data.gov.au</a>.
     </p>
-    <p>The map shows how Australians voted in the 2022 federal election, comparing support for the two major political groups — the Australian Labor Party (ALP) and the Liberal-National Coalition. Each electorate is coloured by the two-party-preferred result, which represents which of the two main sides received more votes after preferences were distributed. Shades of blue indicate areas where Labor gained the majority, while shades of red show where the Coalition led. By looking across the country, we can see clear patterns: Labor's strength is concentrated in urban and coastal regions, while the Coalition continues to perform strongly in many rural areas. Together, these colours reveal the political landscape that shaped the 2022 outcome and the regional divides within Australia's democracy.</p>
+    <p>The map shows how Australians voted in the 2022 federal election, comparing support for the two major political groups - the Australian Labor Party (ALP) and the Liberal-National Coalition. Each electorate is coloured by the two-party-preferred result, which represents which of the two main sides received more votes after preferences were distributed. Shades of red indicate areas where Labor gained the majority, while shades of blue show where the Coalition led. By looking across the country, we can see clear patterns: Labor's strength is concentrated in urban and coastal regions, while the Coalition continues to perform strongly in many rural areas. Together, these colours reveal the political landscape that shaped the 2022 outcome and the regional divides within Australia's democracy.</p>
     </div><div class="chart">
     <div id="vis"></div>
     </div></div></section>
@@ -42,9 +43,20 @@
     <h2>Voter turnout over time (filter by state)</h2>
     <div class="grid-two"><div class="text">
     <p>Use the dropdown to filter; choose “All” to show every state.</p>
+    <p>The line chart tracks how voter turnout has changed across Australia's states and territories over recent federal elections. Each line represents one state or territory, showing the percentage of enrolled voters who cast a valid vote. While voting in Australia is compulsory, turnout still fluctuates slightly between elections and regions. Some areas, such as the Northern Territory, often record lower participation, partly due to distance and access to polling places. In contrast, states like Victoria and New South Wales tend to remain consistently high. Together, these trends reveal that even in a system where everyone must vote, levels of civic engagement can still vary - reflecting differences in demographics, access, and interest over time.</p>
     </div><div class="chart">
     <div id="vis-turnout"></div>
     </div></div></section>
+
+    <!-- ===================== SEATS STACKED BAR ===================== -->
+    <section class="viz-section">
+      <h2>Seats by party (House of Representatives)</h2>
+      <div class="grid-two"><div class="text">
+        <p>Stacked bars show the total seats held by each major party at each election year.</p>
+      </div><div class="chart">
+        <div id="vis-seats"></div>
+      </div></div>
+    </section>
   </div>
 
   <script>
@@ -161,6 +173,7 @@
   };
 
   vegaEmbed("#vis-turnout", "specs/turnout.json?v=2", { actions: false });
+  vegaEmbed("#vis-seats", "specs/seats_stacked.json?v=5", { actions: false });
   </script>
 
 </body>

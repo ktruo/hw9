@@ -1,0 +1,95 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Stacked/100%-stacked seats by party with toggle.",
+  "autosize": { "type": "fit-x", "contains": "padding" },
+  "width": "container",
+  "height": 380,
+  "background": "white",
+  "data": { "url": "../data/seats.csv", "format": { "type": "csv" } },
+  "params": [
+    {
+      "name": "seats_mode",
+      "value": "Seats",
+      "bind": { "input": "select", "options": ["Seats", "Percent"], "name": "View: " }
+    }
+  ],
+  "layer": [
+    {
+      "mark": { "type": "bar" },
+      "encoding": {
+        "x": {
+          "field": "Year",
+          "type": "ordinal",
+          "title": "Election year",
+          "sort": "ascending",
+          "scale": { "paddingInner": 0.6, "paddingOuter": 0.3 }
+        },
+        "y": {
+          "aggregate": "sum",
+          "field": "Seats",
+          "type": "quantitative",
+          "title": "Seats",
+          "stack": "zero",
+          "axis": { "title": "Seats" }
+        },
+        "color": {
+          "field": "Party",
+          "type": "nominal",
+          "title": "Party",
+          "sort": ["ALP", "Coalition"],
+          "scale": { "domain": ["ALP", "Coalition"], "range": ["#d32f2f", "#1976d2"] }
+        },
+        "opacity": {
+          "condition": { "test": "seats_mode == 'Seats'", "value": 1 },
+          "value": 0
+        },
+        "tooltip": [
+          { "field": "Year", "type": "ordinal" },
+          { "field": "Party", "type": "nominal" },
+          { "aggregate": "sum", "field": "Seats", "type": "quantitative", "title": "Seats" }
+        ]
+      }
+    },
+    {
+      "mark": { "type": "bar" },
+      "encoding": {
+        "x": {
+          "field": "Year",
+          "type": "ordinal",
+          "title": "Election year",
+          "sort": "ascending",
+          "scale": { "paddingInner": 0.6, "paddingOuter": 0.3 }
+        },
+        "y": {
+          "aggregate": "sum",
+          "field": "Seats",
+          "type": "quantitative",
+          "stack": "normalize",
+          "axis": { "title": "Seat share (%)", "format": ".0%" }
+        },
+        "color": {
+          "field": "Party",
+          "type": "nominal",
+          "title": "Party",
+          "sort": ["ALP", "Coalition"],
+          "scale": { "domain": ["ALP", "Coalition"], "range": ["#d32f2f", "#1976d2"] }
+        },
+        "opacity": {
+          "condition": { "test": "seats_mode == 'Percent'", "value": 1 },
+          "value": 0
+        },
+        "tooltip": [
+          { "field": "Year", "type": "ordinal" },
+          { "field": "Party", "type": "nominal" },
+          { "aggregate": "sum", "field": "Seats", "type": "quantitative", "title": "Seat share", "format": ".0%" }
+        ]
+      }
+    }
+  ],
+  "resolve": { "scale": { "y": "independent" } },
+  "config": {
+    "view": { "stroke": null },
+    "axis": { "labelFontSize": 11, "titleFontSize": 12 },
+    "legend": { "titleFontSize": 12, "labelFontSize": 11 }
+  }
+}
