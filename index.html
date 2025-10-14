@@ -135,9 +135,38 @@
   };
 
   // Load smaller charts first and log any failures for debugging on GitHub Pages
-  vegaEmbed("#vis-turnout", "specs/turnout.json?v=2", { actions: false }).catch(err => console.error("turnout embed error", err));
-  vegaEmbed("#vis-seats", "specs/seats_stacked.json?v=6", { actions: false }).catch(err => console.error("seats embed error", err));
-  vegaEmbed("#vis-sankey", "specs/bipartite_flow.json?v=9", { actions: false }).catch(err => console.error("sankey embed error", err));
+  const loaderOpts = { baseURL: new URL("./", window.location.href).href };
+
+  async function fetchAndRewriteSpec(url) {
+    const res = await fetch(url, { cache: "no-cache" });
+    if (!res.ok) throw new Error(`Failed to fetch spec ${url}: ${res.status}`);
+    const spec = await res.json();
+    const rewrite = (node) => {
+      if (!node || typeof node !== "object") return;
+      for (const k of Object.keys(node)) {
+        const v = node[k];
+        if (k === "url" && typeof v === "string" && v.startsWith("../data/")) {
+          node[k] = v.replace("../data/", "data/");
+        } else if (typeof v === "object") {
+          rewrite(v);
+        }
+      }
+    };
+    rewrite(spec);
+    return spec;
+  }
+
+  fetchAndRewriteSpec("specs/turnout.json?v=2")
+    .then(spec => vegaEmbed("#vis-turnout", spec, { actions: false, loader: loaderOpts }))
+    .catch(err => console.error("turnout embed error", err));
+
+  fetchAndRewriteSpec("specs/seats_stacked.json?v=6")
+    .then(spec => vegaEmbed("#vis-seats", spec, { actions: false, loader: loaderOpts }))
+    .catch(err => console.error("seats embed error", err));
+
+  fetchAndRewriteSpec("specs/bipartite_flow.json?v=9")
+    .then(spec => vegaEmbed("#vis-sankey", spec, { actions: false, loader: loaderOpts }))
+    .catch(err => console.error("sankey embed error", err));
   // Prefer a lighter TopoJSON if available; fall back to existing spec
   (async () => {
     try {
@@ -166,7 +195,7 @@
       }
 
       // Fallback: use existing external spec (GeoJSON)
-      return vegaEmbed("#vis", "specs/map.json?v=3", { actions: false });
+      return vegaEmbed("#vis", "specs/map.json?v=3", { actions: false, loader: loaderOpts });
     } catch (err) {
       console.error("map embed error", err);
     }
