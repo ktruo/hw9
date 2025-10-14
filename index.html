@@ -138,7 +138,39 @@
   vegaEmbed("#vis-turnout", "specs/turnout.json?v=2", { actions: false }).catch(err => console.error("turnout embed error", err));
   vegaEmbed("#vis-seats", "specs/seats_stacked.json?v=6", { actions: false }).catch(err => console.error("seats embed error", err));
   vegaEmbed("#vis-sankey", "specs/bipartite_flow.json?v=9", { actions: false }).catch(err => console.error("sankey embed error", err));
-  vegaEmbed("#vis", "specs/map.json?v=3", { actions: false }).catch(err => console.error("map embed error", err));
+  // Prefer a lighter TopoJSON if available; fall back to existing spec
+  (async () => {
+    try {
+      const [topoResp, specResp] = await Promise.allSettled([
+        fetch("data/ced_2021.topo.json"),
+        fetch("specs/map.json?v=3")
+      ]);
+
+      let specJson = null;
+      if (specResp.status === "fulfilled" && specResp.value.ok) {
+        specJson = await specResp.value.json();
+      }
+
+      // If TopoJSON exists, detect layer name and use it
+      if (topoResp.status === "fulfilled" && topoResp.value.ok) {
+        const topo = await topoResp.value.json();
+        const layerNames = topo && topo.objects ? Object.keys(topo.objects) : [];
+        const featureName = layerNames.length ? layerNames[0] : null;
+        if (featureName && specJson) {
+          specJson.data = {
+            url: "data/ced_2021.topo.json",
+            format: { type: "topojson", feature: featureName }
+          };
+          return vegaEmbed("#vis", specJson, { actions: false });
+        }
+      }
+
+      // Fallback: use existing external spec (GeoJSON)
+      return vegaEmbed("#vis", "specs/map.json?v=3", { actions: false });
+    } catch (err) {
+      console.error("map embed error", err);
+    }
+  })();
 
 
   // ===================== TURNOUT LINE CHART SPEC =====================
