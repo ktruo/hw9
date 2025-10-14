@@ -1,0 +1,109 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "Sankey diagram from source/target/value in flow.csv",
+  "autosize": "pad",
+  "padding": 12,
+  "width": 1000,
+  "height": 480,
+  "background": "white",
+
+  "data": [
+    {
+      "name": "links",
+      "url": "../data/flow.csv",
+      "format": { "type": "csv" },
+      "transform": [
+        { "type": "formula", "as": "value", "expr": "toNumber(datum.value)" }
+      ]
+    },
+    {
+      "name": "nodes",
+      "source": "links",
+      "transform": [
+        { "type": "fold", "fields": ["source", "target"], "as": ["key", "name"] },
+        { "type": "aggregate", "groupby": ["name"] }
+      ]
+    },
+    {
+      "name": "sankey",
+      "source": "links",
+      "transform": [
+        {
+          "type": "sankey",
+          "nodes": "nodes",
+          "nodeKey": "name",
+          "linkSource": "source",
+          "linkTarget": "target",
+          "linkValue": "value",
+          "nodeAlign": "justify",
+          "nodePadding": 12,
+          "nodeWidth": 14
+        }
+      ]
+    }
+  ],
+
+  "scales": [
+    {
+      "name": "nodeColor",
+      "type": "ordinal",
+      "domain": { "data": "nodes", "field": "name" },
+      "range": ["#d32f2f", "#1976d2", "#43a047", "#8e24aa", "#ffb300", "#00838f", "#5e35b1", "#6d4c41", "#f4511e", "#546e7a"]
+    },
+    {
+      "name": "linkWidth",
+      "type": "linear",
+      "domain": { "data": "links", "field": "value" },
+      "range": [1, 18]
+    }
+  ],
+
+  "marks": [
+    {
+      "type": "path",
+      "from": { "data": "sankey" },
+      "encode": {
+        "update": {
+          "path": { "field": "path" },
+          "stroke": { "value": "#999" },
+          "strokeOpacity": { "value": 0.5 },
+          "strokeWidth": { "scale": "linkWidth", "field": "value" },
+          "fill": { "value": null }
+        }
+      }
+    },
+    {
+      "type": "rect",
+      "from": { "data": "sankey_nodes" },
+      "encode": {
+        "update": {
+          "x": { "field": "x0" },
+          "x2": { "field": "x1" },
+          "y": { "field": "y0" },
+          "y2": { "field": "y1" },
+          "fill": [
+            { "test": "datum.name == 'ALP'", "value": "#d32f2f" },
+            { "test": "datum.name == 'Coalition'", "value": "#1976d2" },
+            { "scale": "nodeColor", "field": "name" }
+          ],
+          "stroke": { "value": "#fff" },
+          "strokeWidth": { "value": 1 }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": { "data": "sankey_nodes" },
+      "encode": {
+        "update": {
+          "x": { "signal": "datum.x1 + 6" },
+          "y": { "signal": "(datum.y0 + datum.y1) / 2" },
+          "text": { "field": "name" },
+          "baseline": { "value": "middle" },
+          "fontSize": { "value": 12 },
+          "fill": { "value": "#111" }
+        }
+      }
+    }
+  ]
+}

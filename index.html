@@ -5,10 +5,10 @@
   <title>Australian Elections Visualisation</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Vega, Vega-Lite, Vega-Embed via CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+  <!-- Vega, Vega-Lite, Vega-Embed pinned (Sankey requires Vega >= 5.28) -->
+  <script src="https://cdn.jsdelivr.net/npm/vega@5.30.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.16.3"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.24.0"></script>
 
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -53,10 +53,22 @@
       <h2>Seats by party (House of Representatives)</h2>
       <div class="grid-two"><div class="text">
         <p>Stacked bars show the total seats held by each major party at each election year.</p>
+        <p>###########</p>
       </div><div class="chart">
         <div id="vis-seats"></div>
       </div></div>
     </section>
+
+    <!-- ===================== PREFERENCE FLOWS (SANKEY) ===================== -->
+    <section class="viz-section">
+      <h2>Preference flows between parties</h2>
+      <div class="grid-two"><div class="text">
+        <p>Flows from minor parties to ALP or Coalition, sized by percentage.</p>
+      </div><div class="chart">
+        <div id="vis-sankey"></div>
+      </div></div>
+    </section>
+
   </div>
 
   <script>
@@ -173,7 +185,8 @@
   };
 
   vegaEmbed("#vis-turnout", "specs/turnout.json?v=2", { actions: false });
-  vegaEmbed("#vis-seats", "specs/seats_stacked.json?v=5", { actions: false });
+  vegaEmbed("#vis-seats", "specs/seats_stacked.json?v=6", { actions: false });
+  vegaEmbed("#vis-sankey", "specs/bipartite_flow.json?v=9", { actions: false });
   </script>
 
 </body>

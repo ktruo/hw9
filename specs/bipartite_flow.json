@@ -1,0 +1,67 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Bipartite flow: sources (left) to targets (right) with line width by value.",
+  "autosize": { "type": "fit-x", "contains": "padding" },
+  "width": "container",
+  "height": 420,
+  "background": "white",
+
+  "data": { "url": "../data/flow.csv", "format": { "type": "csv" } },
+
+  "transform": [
+    { "calculate": "lower(datum.source)", "as": "source_lc" },
+    { "filter": "indexof(['alp','coalition'], datum.source_lc) == -1" },
+    { "calculate": "toNumber(datum.value)", "as": "v" },
+    { "calculate": "datum.target", "as": "tgt" },
+    { "window": [{ "op": "row_number", "as": "id" }] },
+    { "fold": ["source", "target"], "as": ["side", "party"] },
+    { "calculate": "lower(datum.party)", "as": "party_lc" },
+    { "filter": "!(datum.side == 'source' && indexof(['alp','coalition'], datum.party_lc) >= 0)" },
+    { "calculate": "datum.side == 'source' ? 0 : 1", "as": "xpos" }
+  ],
+
+  "layer": [
+    {
+      "mark": { "type": "line", "strokeOpacity": 0.65 },
+      "encoding": {
+        "x": { "field": "xpos", "type": "quantitative", "scale": { "domain": [0, 1] }, "axis": null },
+        "y": { "field": "party", "type": "nominal", "axis": null },
+        "detail": { "field": "id" },
+        "size": { "field": "v", "type": "quantitative", "scale": { "range": [1, 18] }, "legend": { "title": "Percent" } },
+        "color": {
+          "field": "tgt",
+          "type": "nominal",
+          "scale": { "domain": ["ALP", "Coalition"], "range": ["#d32f2f", "#1976d2"] },
+          "legend": { "title": "Target" }
+        },
+        "tooltip": [
+          { "field": "source", "type": "nominal", "title": "From" },
+          { "field": "target", "type": "nominal", "title": "To" },
+          { "field": "v", "type": "quantitative", "title": "Percent", "format": ".2f" }
+        ]
+      }
+    },
+    {
+      "data": { "url": "../data/flow.csv", "format": { "type": "csv" } },
+      "transform": [
+        { "calculate": "lower(trim(datum.source))", "as": "source_norm" },
+        { "filter": "datum.source_norm != 'alp' && datum.source_norm != 'coalition'" },
+        { "aggregate": [{ "op": "count", "as": "n" }], "groupby": ["source"] }
+      ],
+      "mark": { "type": "text", "align": "right", "baseline": "middle", "dx": -8, "fontSize": 12, "color": "#111" },
+      "encoding": { "x": { "value": 0 }, "y": { "field": "source", "type": "nominal" }, "text": { "field": "source" } }
+    },
+    {
+      "data": { "url": "../data/flow.csv", "format": { "type": "csv" } },
+      "transform": [ { "aggregate": [{ "op": "count", "as": "n" }], "groupby": ["target"] } ],
+      "mark": { "type": "text", "align": "left", "baseline": "middle", "dx": 8, "fontSize": 12, "color": "#111" },
+      "encoding": { "x": { "value": 1 }, "y": { "field": "target", "type": "nominal" }, "text": { "field": "target" } }
+    }
+  ],
+
+  "config": {
+    "view": { "stroke": null },
+    "axis": { "labelFontSize": 11, "titleFontSize": 12 },
+    "legend": { "titleFontSize": 12, "labelFontSize": 11 }
+  }
+}

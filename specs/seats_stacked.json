@@ -1,8 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "description": "Stacked/100%-stacked seats by party with toggle.",
-  "autosize": { "type": "fit-x", "contains": "padding" },
-  "width": "container",
+  "width": 1000,
   "height": 380,
   "background": "white",
   "data": { "url": "../data/seats.csv", "format": { "type": "csv" } },

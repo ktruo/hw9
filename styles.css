@@ -102,7 +102,7 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
 .text p, .text a { overflow-wrap: anywhere; word-break: break-word; hyphens: auto; }
 
 /* Card containers for charts */
-#vis, #vis-turnout, #vis-seats {
+#vis, #vis-turnout, #vis-seats, #vis-sankey {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 12px;
@@ -156,7 +156,8 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
 /* Subtle separation between text and charts */
 .wrap p + #vis,
 .wrap p + #vis-turnout,
-.wrap p + #vis-seats { margin-top: 12px; }
+.wrap p + #vis-seats,
+.wrap p + #vis-sankey { margin-top: 12px; }
 
 /* Responsive tweaks */
 @media (max-width: 900px) {

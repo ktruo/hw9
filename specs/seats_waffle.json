@@ -1,0 +1,60 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Waffle chart (10x10) showing seat share by party for a selected year.",
+  "autosize": { "type": "fit-x", "contains": "padding" },
+  "width": "container",
+  "height": 320,
+  "background": "white",
+
+  "params": [
+    {
+      "name": "year_waffle",
+      "value": 2022,
+      "bind": { "input": "range", "min": 2007, "max": 2022, "step": 3, "name": "Year: " }
+    }
+  ],
+
+  "data": { "url": "../data/seats.csv", "format": { "type": "csv" } },
+
+  "transform": [
+    { "filter": "datum.Year == year_waffle" },
+    { "joinaggregate": [{ "op": "sum", "field": "Seats", "as": "totalSeats" }], "groupby": ["Year"] },
+    { "calculate": "datum.Seats / datum.totalSeats", "as": "pct" },
+    { "calculate": "round(datum.pct * 100)", "as": "units" },
+    {
+      "window": [ { "op": "sum", "field": "units", "as": "cum_units" } ],
+      "sort": [ { "field": "Party" } ]
+    },
+    { "calculate": "datum.cum_units - datum.units", "as": "start" },
+    { "calculate": "range(datum.start, datum.cum_units)", "as": "tile" },
+    { "flatten": ["tile"] },
+    { "calculate": "datum.tile % 10", "as": "col" },
+    { "calculate": "floor(datum.tile / 10)", "as": "row" }
+  ],
+
+  "mark": { "type": "rect" },
+
+  "encoding": {
+    "x": { "field": "col", "type": "ordinal", "axis": null, "sort": "ascending" },
+    "y": { "field": "row", "type": "ordinal", "axis": null, "sort": "descending" },
+    "color": {
+      "field": "Party",
+      "type": "nominal",
+      "title": "Party",
+      "scale": { "domain": ["ALP", "Coalition"], "range": ["#d32f2f", "#1976d2"] }
+    },
+    "tooltip": [
+      { "field": "Year", "type": "ordinal" },
+      { "field": "Party", "type": "nominal" },
+      { "field": "Seats", "type": "quantitative", "title": "Seats" },
+      { "field": "pct", "type": "quantitative", "title": "Seat share", "format": ".0%" }
+    ]
+  },
+
+  "config": {
+    "view": { "stroke": null },
+    "axis": { "labelFontSize": 11, "titleFontSize": 12 },
+    "legend": { "titleFontSize": 12, "labelFontSize": 11 }
+  }
+}
+
