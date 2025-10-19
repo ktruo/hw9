@@ -1,0 +1,35 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "Income Bracket by Age Group (faceted by State)",
+  "autosize": { "type": "fit-x", "contains": "padding" },
+  "background": "white",
+  "data": { "url": "data/age_income_binned.csv", "format": { "type": "csv" } },
+  "transform": [
+    { "joinaggregate": [{ "op": "sum", "field": "Count", "as": "StateTotal" }], "groupby": ["State"] },
+    { "calculate": "datum.StateTotal > 0 ? datum.Count / datum.StateTotal : 0", "as": "Percent" }
+  ],
+  "facet": { "field": "State", "type": "nominal", "columns": 3, "title": null, "sort": ["NSW","VIC","QLD","WA","SA","TAS","ACT","NT","AUS"] },
+  "spec": {
+    "width": 260,
+    "height": 220,
+    "mark": { "type": "rect" },
+    "encoding": {
+      "x": { "field": "IncomeBin", "type": "nominal", "title": "Income", "sort": ["Negative/Nil to $649", "$650-$1,499", "$1,500-$2,999", "$3,000 and above"], "axis": { "labelAngle": 35, "labelLimit": 180 } },
+      "y": { "field": "AgeBin", "type": "nominal", "title": "Age", "sort": ["15-24", "25-44", "45-64", "65-84", "85 years and over"], "scale": { "domain": ["15-24", "25-44", "45-64", "65-84", "85 years and over"], "reverse": true } },
+      "color": { "field": "Percent", "type": "quantitative", "title": "Share of state total", "scale": { "scheme": "tealblues", "domain": [0, 0.2], "clamp": true }, "legend": { "format": ".0%" } },
+      "tooltip": [
+        { "field": "State", "type": "nominal" },
+        { "field": "AgeBin", "type": "nominal", "title": "Age group" },
+        { "field": "IncomeBin", "type": "nominal", "title": "Income bracket" },
+        { "field": "Count", "type": "quantitative", "format": "," },
+        { "field": "Percent", "type": "quantitative", "format": ".1%", "title": "Share of state" }
+      ]
+    }
+  },
+  "resolve": { "scale": { "size": "shared", "color": "shared" } },
+  "config": {
+    "view": { "stroke": null },
+    "axis": { "labelFontSize": 10, "titleFontSize": 12 },
+    "legend": { "titleFontSize": 12, "labelFontSize": 11 }
+  }
+}

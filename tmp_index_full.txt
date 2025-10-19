@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Australian Elections Visualisation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Vega, Vega-Lite, Vega-Embed pinned (Sankey requires Vega >= 5.28) -->
+  <script src="https://cdn.jsdelivr.net/npm/vega@5.30.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.16.3"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.24.0"></script>
+
+  <link rel="stylesheet" href="styles.css" />
+  <!-- Inline SVG favicon to avoid 404 for /favicon.ico -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' ry='8' fill='%2300447a'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' font-family='Segoe UI, Roboto, Arial' font-size='30' fill='white'%3EAU%3C/text%3E%3C/svg%3E" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="wrap">
+      <h1 class="site-title">Australia Votes: A Nation Divided and Engaged</h1>
+      <p class="site-intro">Every few years, Australians head to the polls to choose who will lead the nation. Voting has become a familiar ritual, yet each election tells a new story about the country’s changing politics and levels of participation. This visual story looks at both where votes were won and how many Australians took part. Through an interactive map of the 2022 election and a line chart of turnout over time, it highlights the patterns, contrasts, and trends that shape Australia's democracy.</p>
+    </div>
+  </header>
+
+  <div class="wrap">
+
+    <!-- ===================== MAP VISUALISATION ===================== -->
+    <section class="viz-section">
+    <h1>Two-Party-Preferred (TPP), House of Representatives, 2022</h1>
+    <div class="grid-two"><div class="text">
+    <p>
+      Colour shows % TPP relative to 50%.<br>
+      Red &gt; 50% ALP; Blue &gt; 50% Coalition. Hover for details.<br>
+      Data: <a href="https://results.aec.gov.au/27966/website/HouseDownloadsMenu-27966-Csv.htm">AEC</a>,
+      boundaries: <a href="https://data.gov.au/data/dataset/commonwealth-electoral-divisions-as-at-2-august-2021">data.gov.au</a>.
+    </p>
+    <p>The map shows how Australians voted in the 2022 federal election, comparing support for the two major political groups - the Australian Labor Party (ALP) and the Liberal-National Coalition. Each electorate is coloured by the two-party-preferred result, which represents which of the two main sides received more votes after preferences were distributed. Shades of red indicate areas where Labor gained the majority, while shades of blue show where the Coalition led. By looking across the country, we can see clear patterns: Labor's strength is concentrated in urban and coastal regions, while the Coalition continues to perform strongly in many rural areas. Together, these colours reveal the political landscape that shaped the 2022 outcome and the regional divides within Australia's democracy.</p>
+    </div><div class="chart">
+    <div id="vis"></div>
+    </div></div></section>
+
+    <!-- ===================== TURNOUT LINE CHART ===================== -->
+    <section class="viz-section">
+    <h2>Voter turnout over time (filter by state)</h2>
+    <div class="grid-two"><div class="text">
+    <p>Use the dropdown to filter; choose “All” to show every state.</p>
+    <p>The line chart tracks how voter turnout has changed across Australia's states and territories over recent federal elections. Each line represents one state or territory, showing the percentage of enrolled voters who cast a valid vote. While voting in Australia is compulsory, turnout still fluctuates slightly between elections and regions. Some areas, such as the Northern Territory, often record lower participation, partly due to distance and access to polling places. In contrast, states like Victoria and New South Wales tend to remain consistently high. Together, these trends reveal that even in a system where everyone must vote, levels of civic engagement can still vary - reflecting differences in demographics, access, and interest over time.</p>
+    </div><div class="chart">
+    <div id="vis-turnout"></div>
+    </div></div></section>
+
+    <!-- ===================== SEATS STACKED BAR ===================== -->
+    <section class="viz-section">
+      <h2>Seats by party (House of Representatives)</h2>
+      <div class="grid-two"><div class="text">
+        <p>Stacked bars show the total seats held by each major party at each election year.</p>
+        <p>###########</p>
+      </div><div class="chart">
+        <div id="vis-seats"></div>
+      </div></div>
+    </section>
+
+    <!-- ===================== AGE x INCOME (FACET BY STATE) ===================== -->
+    <section class="viz-section">
+      <h2>Income brackets by age group (by state)</h2>
+      <div class="grid-two"><div class="text">
+        <p>Each panel shows a state/territory. Circles are placed at each Age group x Income bracket cell and sized/colored by the number of people. This mirrors a 2D histogram layout for categorical bins.</p>
+      </div><div class="chart">
+        <div id="vis-age-income"></div>
+      </div></div>
+    </section>
+
+    <!-- ===================== PREFERENCE FLOWS (SANKEY) ===================== -->
+    <section class="viz-section">
+      <h2>Preference flows between parties</h2>
+      <div class="grid-two"><div class="text">
+        <p>Flows from minor parties to ALP or Coalition, sized by percentage.</p>
+      </div><div class="chart">
+        <div id="vis-sankey"></div>
+      </div></div>
+    </section>
+
+  </div>
+
+  <script>
+  // ===================== MAP SPEC =====================
+  const mapSpec = {
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 1000,
+    "height": 620,
+    "background": "white",
+    "projection": { "type": "mercator", "center": [134, -26], "scale": 850 },
+
+    "data": {
+      "url": "data/ced_2021.geojson?v=2",
+      "format": { "type": "json", "property": "features" }
+    },
+
+    "transform": [
+      { "calculate": "datum.properties.Elect_div", "as": "DivisionNameGeo" },
+      {
+        "lookup": "DivisionNameGeo",
+        "from": {
+          "data": { "url": "data/tpp_2022.csv" },
+          "key": "DivisionNm",
+          "fields": [
+            "Australian Labor Party Percentage",
+            "Liberal/National Coalition Percentage",
+            "StateAb"
+          ]
+        }
+      },
+      {
+        "calculate": "isValid(datum['Australian Labor Party Percentage']) ? datum['Australian Labor Party Percentage'] - 50 : null",
+        "as": "margin_alp"
+      },
+      {
+        "calculate": "isValid(datum['Australian Labor Party Percentage']) ? (datum['Australian Labor Party Percentage'] >= 50 ? 'ALP' : 'Coalition') : 'No data'",
+        "as": "winner"
+      }
+    ],
+
+    "mark": { "type": "geoshape", "stroke": "#dddddd", "strokeWidth": 0.4 },
+
+    "encoding": {
+      "color": {
+        "field": "margin_alp",
+        "type": "quantitative",
+        "title": "TPP margin (ALP – 50%)",
+        "scale": { "scheme": "redblue", "domain": [-20, 0, 20] },
+        "legend": { "format": "+.0f", "labelExpr": "datum.value + '%'" }
+      },
+      "tooltip": [
+        { "field": "DivisionNameGeo", "type": "nominal", "title": "Division" },
+        { "field": "StateAb", "type": "nominal", "title": "State" },
+        { "field": "winner", "type": "nominal", "title": "Winner" },
+        { "field": "Australian Labor Party Percentage", "type": "quantitative", "title": "ALP TPP", "format": ".1f" },
+        { "field": "Liberal/National Coalition Percentage", "type": "quantitative", "title": "Coalition TPP", "format": ".1f" }
+      ]
+    },
+
+    "config": {
+      "view": { "stroke": null },
+      "legend": { "titleFontSize": 12, "labelFontSize": 11 }
+    }
+  };
+
+  // Load smaller charts first and log any failures for debugging on GitHub Pages
+  const loaderOpts = undefined; // not relying on loader baseURL; rewrite URLs to absolute
+  const pageBase = new URL('./', window.location.href).href; // ensures trailing slash, e.g., .../hw9/
+
+  async function fetchAndRewriteSpec(url) {
+    const res = await fetch(url, { cache: "no-cache" });
+    if (!res.ok) throw new Error(`Failed to fetch spec ${url}: ${res.status}`);
+    const spec = await res.json();
+    const rewrite = (node) => {
+      if (!node || typeof node !== "object") return;
+      for (const k of Object.keys(node)) {
+        const v = node[k];
+        if (k === "url" && typeof v === "string") {
+          let p = v;
+          if (p.startsWith("../data/")) {
+            p = p.replace("../data/", "data/");
+          }
+          if (p.startsWith("data/")) {
+            try {
+              node[k] = new URL(p, pageBase).href;
+            } catch (_) {
+              node[k] = p;
+            }
+          }
+        } else if (typeof v === "object") {
+          rewrite(v);
+        }
+      }
+    };
+    rewrite(spec);
+    return spec;
+  }
+
+  fetchAndRewriteSpec("specs/turnout.json?v=2")
+    .then(spec => vegaEmbed("#vis-turnout", spec, { actions: false, loader: loaderOpts }))
+    .catch(err => console.error("turnout embed error", err));
+
+  fetchAndRewriteSpec("specs/seats_stacked.json?v=6")
+    .then(spec => vegaEmbed("#vis-seats", spec, { actions: false, loader: loaderOpts }))
+    .catch(err => console.error("seats embed error", err));
+
+  fetchAndRewriteSpec("specs/bipartite_flow.json?v=9")
+    .then(spec => vegaEmbed("#vis-sankey", spec, { actions: false, loader: loaderOpts }))
+    .catch(err => console.error("sankey embed error", err));
+
+  console.log("embedding age-income histogram spec...");
+  const csvAgeIncomeUrl = (() => { try { return new URL("data/age_income_by_state.csv", pageBase).href; } catch { return "data/age_income_by_state.csv"; } })();
+  console.log("age-income csv url:", csvAgeIncomeUrl);
+  const ageIncomeSpec = {
+    $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+    title: "Income bracket by age group (aggregated bins, by state)",
+    autosize: { type: "fit-x", contains: "padding" },
+    background: "white",
+    data: { url: csvAgeIncomeUrl, format: { type: "csv", parse: { Count: "number" } } },
+    transform: [
+      { filter: "datum.AgeGroup !== 'Total' && datum.IncomeBracket !== 'Total' && datum.IncomeBracket !== 'Personal income not stated'" },
+      { calculate: "
+          datum.AgeGroup == '15-19 years' || datum.AgeGroup == '20-24 years' ? '15-24' :
+          (datum.AgeGroup == '25-34 years' || datum.AgeGroup == '35-44 years' ? '25-44' :
+          (datum.AgeGroup == '45-54 years' || datum.AgeGroup == '55-64 years' ? '45-64' :
+          (datum.AgeGroup == '65-74 years' || datum.AgeGroup == '75-84 years' ? '65-84' :
+          (datum.AgeGroup == '85 years and over' ? '85 years and over' : null))))
+        ", as: "AgeBin" },
+      { calculate: "
+          datum.IncomeBracket == 'Negative/Nil income' || datum.IncomeBracket == '$1-$149' || datum.IncomeBracket == '$150-$299' || datum.IncomeBracket == '$300-$399' || datum.IncomeBracket == '$400-$499' || datum.IncomeBracket == '$500-$649' ? 'Negative/Nil to $649' :
+          (datum.IncomeBracket == '$650-$799' || datum.IncomeBracket == '$800-$999' || datum.IncomeBracket == '$1,000-$1,249' || datum.IncomeBracket == '$1,250-$1,499' ? '$650-$1,499' :
+          (datum.IncomeBracket == '$1,500-$1,749' || datum.IncomeBracket == '$1,750-$1,999' || datum.IncomeBracket == '$2,000-$2,999 more' ? '$1,500-$2,999' :
+          (datum.IncomeBracket == '$3,000-$3,499' || datum.IncomeBracket == '$3,500 or more' ? '$3,000 and above' : null)))
+        ", as: "IncomeBin" },
+      { filter: "isValid(datum.AgeBin) && isValid(datum.IncomeBin)" },
+      { calculate: "toNumber(datum.Count)", as: "CountNum" },
+      { filter: "isValid(datum.CountNum)" },
+      { aggregate: [{ op: "sum", field: "CountNum", as: "Count" }], groupby: ["State","AgeBin","IncomeBin"] }
+    ],
+    facet: { field: "State", type: "nominal", columns: 4, title: null },
+    spec: {
+      width: 260,
+      height: 220,
+      mark: { type: "circle", opacity: 0.85, stroke: "#333", strokeWidth: 0.3 },
+      encoding: {
+        x: {
+          field: "IncomeBin",
+          type: "nominal",
+          title: "Income bracket (aggregated)",
+          sort: [
+            "Negative/Nil to $649",
+            "$650-$1,499",
+            "$1,500-$2,999",
+            "$3,000 and above"
+          ],
+          axis: { labelAngle: 35, labelLimit: 180 }
+        },
+        y: {
+          field: "AgeBin",
+          type: "nominal",
+          title: "Age group (aggregated)",
+          sort: [
+            "15-24",
+            "25-44",
+            "45-64",
+            "65-84",
+            "85 years and over"
+          ]
+        },
+        size: { field: "Count", type: "quantitative", title: "Count", scale: { type: "sqrt", range: [0, 2000] } },
+        color: { field: "Count", type: "quantitative", title: "Count", scale: { scheme: "tealblues" } },
+        tooltip: [
+          { field: "State", type: "nominal" },
+          { field: "AgeGroup", type: "nominal", title: "Age group" },
+          { field: "IncomeBracket", type: "nominal", title: "Income bracket" },
+          { field: "Count", type: "quantitative", format: "," }
+        ]
+      }
+    },
+    resolve: { scale: { size: "shared", color: "shared" } },
+    config: {
+      view: { stroke: null },
+      axis: { labelFontSize: 10, titleFontSize: 12 },
+      legend: { titleFontSize: 12, labelFontSize: 11 }
+    }
+  };
+  vegaEmbed("#vis-age-income", ageIncomeSpec, { actions: false, loader: loaderOpts })
+    .then(() => console.log("age-income embed done"))
+    .catch(err => console.error("age-income embed error", err));
+  // Prefer a lighter TopoJSON if available; fall back to existing spec
+  (async () => {
+    try {
+      const tryTopo = new URLSearchParams(window.location.search).get("topo") === "1";
+
+      if (tryTopo) {
+        const [topoResp, specResp] = await Promise.allSettled([
+          fetch("data/ced_2021.topo.json"),
+          fetch("specs/map.json?v=3")
+        ]);
+
+        let specJson = null;
+        if (specResp.status === "fulfilled" && specResp.value.ok) {
+          // rewrite any data URLs to absolute
+          specJson = await fetchAndRewriteSpec("specs/map.json?v=3");
+        }
+
+        if (topoResp.status === "fulfilled" && topoResp.value.ok && specJson) {
+          const topo = await topoResp.value.json();
+          const layerNames = topo && topo.objects ? Object.keys(topo.objects) : [];
+          const featureName = layerNames.length ? layerNames[0] : null;
+          if (featureName) {
+            specJson.data = {
+              url: new URL("data/ced_2021.topo.json", pageBase).href,
+              format: { type: "topojson", feature: featureName }
+            };
+            return vegaEmbed("#vis", specJson, { actions: false, loader: loaderOpts });
+          }
+        }
+        // Fallback to GeoJSON if topo not available/usable
+        if (specJson) {
+          return vegaEmbed("#vis", specJson, { actions: false, loader: loaderOpts });
+        }
+      } else {
+        // Default path: do not attempt TopoJSON (avoids 404 noise), just use rewritten GeoJSON spec
+        const specJson = await fetchAndRewriteSpec("specs/map.json?v=3");
+        return vegaEmbed("#vis", specJson, { actions: false, loader: loaderOpts });
+      }
+
+      // If spec fetch failed entirely, last resort
+      return vegaEmbed("#vis", "specs/map.json?v=3", { actions: false });
+    } catch (err) {
+      console.error("map embed error", err);
+    }
+  })();
+
+
+  // ===================== TURNOUT LINE CHART SPEC =====================
+  const turnoutSpec = {
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 1000,
+    "height": 420,
+    "background": "white",
+
+    "params": [
+      {
+        "name": "stateFilter_turnout",
+        "value": "All",
+        "bind": {
+          "input": "select",
+          "options": ["All","NSW","VIC","QLD","WA","SA","TAS","ACT","NT"],
+          "name": "State: "
+        }
+      }
+    ],
+
+    "data": { "url": "data/turnout_by_state.csv?v=14", "format": { "type": "csv" } },
+
+    "transform": [
+      { "filter": "stateFilter_turnout == 'All' || datum.State == stateFilter_turnout" }
+    ],
+
+    "mark": { "type": "line", "point": true },
+    "encoding": {
+      "x": { "field": "Year", "type": "quantitative", "title": "Election year" },
+      "y": { "field": "TurnoutPct", "type": "quantitative", "title": "Turnout (%)" },
+      "color": {
+        "field": "State", "type": "nominal", "title": "State/Territory",
+        "sort": ["NSW","VIC","QLD","WA","SA","TAS","ACT","NT"]
+      },
+      "tooltip": [
+        { "field": "Year", "type": "quantitative" },
+        { "field": "State", "type": "nominal" },
+        { "field": "TurnoutPct", "type": "quantitative", "format": ".2f", "title": "Turnout (%)" }
+      ]
+    },
+
+    "config": {
+      "view": { "stroke": null },
+      "axis": { "labelFontSize": 11, "titleFontSize": 12 },
+      "legend": { "titleFontSize": 12, "labelFontSize": 11 }
+    }
+  };
+
+  // (moved above with error handlers)
+  </script>
+
+</body>
+</html>
+
+

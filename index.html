@@ -11,13 +11,15 @@
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.24.0"></script>
 
   <link rel="stylesheet" href="styles.css" />
+  <!-- Inline SVG favicon to avoid 404 for /favicon.ico -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' ry='8' fill='%2300447a'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' font-family='Segoe UI, Roboto, Arial' font-size='30' fill='white'%3EAU%3C/text%3E%3C/svg%3E" />
 </head>
 <body>
 
   <header class="site-header">
     <div class="wrap">
       <h1 class="site-title">Australia Votes: A Nation Divided and Engaged</h1>
-      <p class="site-intro">Every few years, Australians head to the polls to choose who will lead the nation. Voting has become a familiar ritual, yet each election tells a new story about the country’s changing politics and levels of participation. This visual story looks at both where votes were won and how many Australians took part. Through an interactive map of the 2022 election and a line chart of turnout over time, it highlights the patterns, contrasts, and trends that shape Australia's democracy.</p>
+      <p class="site-intro">Every few years, Australians head to the polls to choose who will lead the nation. Voting has become a familiar ritual, yet each election tells a new story about the countryâ€™s changing politics and levels of participation. This visual story looks at both where votes were won and how many Australians took part. Through an interactive map of the 2022 election and a line chart of turnout over time, it highlights the patterns, contrasts, and trends that shape Australia's democracy.</p>
     </div>
   </header>
 
@@ -38,11 +40,31 @@
     <div id="vis"></div>
     </div></div></section>
 
+    <!-- ===================== AGE x INCOME (STATE GRID) ===================== -->
+    <section class="viz-section">
+      <h2>Income brackets by age group (by state)</h2>
+      <div class="grid-two"><div class="text">
+        <p>Each panel shows a state/territory. Heatmap cells at Age group × Income bracket are colored by the number of people. Data is pre-binned for readability.</p>
+      </div><div class="chart full-bleed">
+        <div id="vis-age-income-grid" class="charts-grid">
+          <div id="vis-age-income-NSW" class="chart-card"></div>
+          <div id="vis-age-income-VIC" class="chart-card"></div>
+          <div id="vis-age-income-QLD" class="chart-card"></div>
+          <div id="vis-age-income-WA" class="chart-card"></div>
+          <div id="vis-age-income-SA" class="chart-card"></div>
+          <div id="vis-age-income-TAS" class="chart-card"></div>
+          <div id="vis-age-income-ACT" class="chart-card"></div>
+          <div id="vis-age-income-NT" class="chart-card"></div>
+          <div id="vis-age-income-AUS" class="chart-card"></div>
+        </div>
+      </div></div>
+    </section>
+
     <!-- ===================== TURNOUT LINE CHART ===================== -->
     <section class="viz-section">
     <h2>Voter turnout over time (filter by state)</h2>
     <div class="grid-two"><div class="text">
-    <p>Use the dropdown to filter; choose “All” to show every state.</p>
+    <p>Use the dropdown to filter; choose â€œAllâ€ to show every state.</p>
     <p>The line chart tracks how voter turnout has changed across Australia's states and territories over recent federal elections. Each line represents one state or territory, showing the percentage of enrolled voters who cast a valid vote. While voting in Australia is compulsory, turnout still fluctuates slightly between elections and regions. Some areas, such as the Northern Territory, often record lower participation, partly due to distance and access to polling places. In contrast, states like Victoria and New South Wales tend to remain consistently high. Together, these trends reveal that even in a system where everyone must vote, levels of civic engagement can still vary - reflecting differences in demographics, access, and interest over time.</p>
     </div><div class="chart">
     <div id="vis-turnout"></div>
@@ -58,6 +80,8 @@
         <div id="vis-seats"></div>
       </div></div>
     </section>
+
+    <!-- (Income brackets grid moved above, duplicate removed) -->
 
     <!-- ===================== PREFERENCE FLOWS (SANKEY) ===================== -->
     <section class="viz-section">
@@ -76,9 +100,9 @@
   const mapSpec = {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
     "width": 1000,
-    "height": 620,
+    "height": 700,
     "background": "white",
-    "projection": { "type": "mercator", "center": [134, -26], "scale": 850 },
+    "projection": { "type": "mercator", "center": [134, -26], "scale": 820 },
 
     "data": {
       "url": "data/ced_2021.geojson?v=2",
@@ -115,7 +139,7 @@
       "color": {
         "field": "margin_alp",
         "type": "quantitative",
-        "title": "TPP margin (ALP – 50%)",
+        "title": "TPP margin (ALP â€“ 50%)",
         "scale": { "scheme": "redblue", "domain": [-20, 0, 20] },
         "legend": { "format": "+.0f", "labelExpr": "datum.value + '%'" }
       },
@@ -178,6 +202,58 @@
   fetchAndRewriteSpec("specs/bipartite_flow.json?v=9")
     .then(spec => vegaEmbed("#vis-sankey", spec, { actions: false, loader: loaderOpts }))
     .catch(err => console.error("sankey embed error", err));
+
+  console.log("embedding age-income grid (9 embeds)...");
+  const binnedCsvUrl = (() => { try { return new URL("data/age_income_binned.csv", pageBase).href; } catch { return "data/age_income_binned.csv"; } })();
+  const states = ["NSW","VIC","QLD","WA","SA","TAS","ACT","NT","AUS"];
+  const baseAgeIncome = {
+    $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+    autosize: { type: "fit-x", contains: "padding" },
+    width: "container",
+    height: 240,
+    background: "white",
+    data: { url: binnedCsvUrl, format: { type: "csv" } },
+    transform: [
+      { joinaggregate: [{ op: "sum", field: "Count", as: "StateTotal" }] },
+      { calculate: "datum.StateTotal > 0 ? datum.Count / datum.StateTotal : 0", as: "Percent" }
+    ],
+    mark: { type: "rect", stroke: "white", strokeWidth: 0.5 },
+    encoding: {
+      x: {
+        field: "IncomeBin", type: "nominal", title: "Income",
+        sort: ["Negative/Nil to $649","$650-$1,499","$1,500-$2,999","$3,000 and above"],
+        axis: { labelAngle: 35, labelLimit: 180 }
+      },
+      y: {
+        field: "AgeBin", type: "nominal", title: "Age",
+        sort: ["15-24","25-44","45-64","65-84","85 years and over"],
+        scale: { domain: ["15-24","25-44","45-64","65-84","85 years and over"], reverse: true }
+      },
+      color: { field: "Percent", type: "quantitative", title: "Share of state total", scale: { scheme: "tealblues", domain: [0, 0.2], clamp: true }, legend: { format: ".0%" } },
+      tooltip: [
+        { field: "State", type: "nominal" },
+        { field: "AgeBin", type: "nominal", title: "Age group" },
+        { field: "IncomeBin", type: "nominal", title: "Income bracket" },
+        { field: "Count", type: "quantitative", format: ",", title: "Count" },
+        { field: "Percent", type: "quantitative", format: ".1%", title: "Share of state" }
+      ]
+    },
+    config: { view: { stroke: null }, axis: { labelFontSize: 10, titleFontSize: 12 } }
+  };
+  (async () => {
+    for (const s of states) {
+      const spec = JSON.parse(JSON.stringify(baseAgeIncome));
+      spec.title = s;
+      spec.transform = [{ filter: `datum.State == '${s}'` }].concat(spec.transform || []);
+      const target = `#vis-age-income-${s}`;
+      try {
+        await vegaEmbed(target, spec, { actions: false, renderer: 'svg', loader: loaderOpts });
+      } catch (e) {
+        console.error("age-income embed error for", s, e);
+      }
+    }
+    console.log("age-income grid embed done");
+  })();
   // Prefer a lighter TopoJSON if available; fall back to existing spec
   (async () => {
     try {
@@ -277,5 +353,4 @@
 
 </body>
 </html>
-
 

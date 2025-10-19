@@ -21,8 +21,18 @@
   ],
   "mark": { "type": "line", "point": true },
   "encoding": {
-    "x": { "field": "Year", "type": "quantitative", "title": "Election year" },
-    "y": { "field": "TurnoutPct", "type": "quantitative", "title": "Turnout (%)" },
+    "x": {
+      "field": "Year",
+      "type": "quantitative",
+      "title": "Election year",
+      "axis": { "format": "d", "tickMinStep": 1 }
+    },
+    "y": {
+      "field": "TurnoutPct",
+      "type": "quantitative",
+      "title": "Turnout (%)",
+      "scale": { "domain": [70, 100] }
+    },
     "color": {
       "field": "State", "type": "nominal", "title": "State/Territory",
       "sort": ["NSW", "VIC", "QLD", "WA", "SA", "TAS", "ACT", "NT"]

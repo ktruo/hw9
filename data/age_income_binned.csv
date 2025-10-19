@@ -1,0 +1,201 @@
+State,AgeBin,IncomeBin,Count
+NSW,15-24,Negative/Nil to $649,621989
+NSW,15-24,"$650-$1,499",236757
+NSW,15-24,"$1,500-$2,999",27673
+NSW,15-24,"$3,000 and above",2013
+NSW,25-44,Negative/Nil to $649,484639
+NSW,25-44,"$650-$1,499",827601
+NSW,25-44,"$1,500-$2,999",618302
+NSW,25-44,"$3,000 and above",158561
+NSW,45-64,Negative/Nil to $649,589425
+NSW,45-64,"$650-$1,499",633613
+NSW,45-64,"$1,500-$2,999",457673
+NSW,45-64,"$3,000 and above",181397
+NSW,65-84,Negative/Nil to $649,764527
+NSW,65-84,"$650-$1,499",268816
+NSW,65-84,"$1,500-$2,999",80180
+NSW,65-84,"$3,000 and above",29045
+NSW,85 years and over,Negative/Nil to $649,115024
+NSW,85 years and over,"$650-$1,499",22620
+NSW,85 years and over,"$1,500-$2,999",5021
+NSW,85 years and over,"$3,000 and above",2237
+VIC,15-24,Negative/Nil to $649,533335
+VIC,15-24,"$650-$1,499",172467
+VIC,15-24,"$1,500-$2,999",16856
+VIC,15-24,"$3,000 and above",1582
+VIC,25-44,Negative/Nil to $649,429490
+VIC,25-44,"$650-$1,499",733379
+VIC,25-44,"$1,500-$2,999",503358
+VIC,25-44,"$3,000 and above",107822
+VIC,45-64,Negative/Nil to $649,469411
+VIC,45-64,"$650-$1,499",520893
+VIC,45-64,"$1,500-$2,999",361784
+VIC,45-64,"$3,000 and above",131369
+VIC,65-84,Negative/Nil to $649,589948
+VIC,65-84,"$650-$1,499",207495
+VIC,65-84,"$1,500-$2,999",58049
+VIC,65-84,"$3,000 and above",20610
+VIC,85 years and over,Negative/Nil to $649,92195
+VIC,85 years and over,"$650-$1,499",17970
+VIC,85 years and over,"$1,500-$2,999",3879
+VIC,85 years and over,"$3,000 and above",1709
+QLD,15-24,Negative/Nil to $649,405570
+QLD,15-24,"$650-$1,499",163063
+QLD,15-24,"$1,500-$2,999",18518
+QLD,15-24,"$3,000 and above",1410
+QLD,25-44,Negative/Nil to $649,308802
+QLD,25-44,"$650-$1,499",556988
+QLD,25-44,"$1,500-$2,999",347152
+QLD,25-44,"$3,000 and above",66124
+QLD,45-64,Negative/Nil to $649,374956
+QLD,45-64,"$650-$1,499",436572
+QLD,45-64,"$1,500-$2,999",301926
+QLD,45-64,"$3,000 and above",88027
+QLD,65-84,Negative/Nil to $649,496841
+QLD,65-84,"$650-$1,499",163095
+QLD,65-84,"$1,500-$2,999",41647
+QLD,65-84,"$3,000 and above",13515
+QLD,85 years and over,Negative/Nil to $649,62585
+QLD,85 years and over,"$650-$1,499",11901
+QLD,85 years and over,"$1,500-$2,999",2277
+QLD,85 years and over,"$3,000 and above",911
+WA,15-24,Negative/Nil to $649,204858
+WA,15-24,"$650-$1,499",71385
+WA,15-24,"$1,500-$2,999",12701
+WA,15-24,"$3,000 and above",1051
+WA,25-44,Negative/Nil to $649,171736
+WA,25-44,"$650-$1,499",258381
+WA,25-44,"$1,500-$2,999",208617
+WA,25-44,"$3,000 and above",53225
+WA,45-64,Negative/Nil to $649,178679
+WA,45-64,"$650-$1,499",198951
+WA,45-64,"$1,500-$2,999",175101
+WA,45-64,"$3,000 and above",63276
+WA,65-84,Negative/Nil to $649,234342
+WA,65-84,"$650-$1,499",81714
+WA,65-84,"$1,500-$2,999",25131
+WA,65-84,"$3,000 and above",8918
+WA,85 years and over,Negative/Nil to $649,31438
+WA,85 years and over,"$650-$1,499",7001
+WA,85 years and over,"$1,500-$2,999",1298
+WA,85 years and over,"$3,000 and above",497
+SA,15-24,Negative/Nil to $649,144194
+SA,15-24,"$650-$1,499",47796
+SA,15-24,"$1,500-$2,999",4447
+SA,15-24,"$3,000 and above",462
+SA,25-44,Negative/Nil to $649,116257
+SA,25-44,"$650-$1,499",197610
+SA,25-44,"$1,500-$2,999",106453
+SA,25-44,"$3,000 and above",16008
+SA,45-64,Negative/Nil to $649,143709
+SA,45-64,"$650-$1,499",161102
+SA,45-64,"$1,500-$2,999",99174
+SA,45-64,"$3,000 and above",24892
+SA,65-84,Negative/Nil to $649,197170
+SA,65-84,"$650-$1,499",69532
+SA,65-84,"$1,500-$2,999",17006
+SA,65-84,"$3,000 and above",5245
+SA,85 years and over,Negative/Nil to $649,32097
+SA,85 years and over,"$650-$1,499",6757
+SA,85 years and over,"$1,500-$2,999",1148
+SA,85 years and over,"$3,000 and above",425
+TAS,15-24,Negative/Nil to $649,41255
+TAS,15-24,"$650-$1,499",14542
+TAS,15-24,"$1,500-$2,999",1203
+TAS,15-24,"$3,000 and above",129
+TAS,25-44,Negative/Nil to $649,39638
+TAS,25-44,"$650-$1,499",62563
+TAS,25-44,"$1,500-$2,999",28531
+TAS,25-44,"$3,000 and above",3586
+TAS,45-64,Negative/Nil to $649,48718
+TAS,45-64,"$650-$1,499",51131
+TAS,45-64,"$1,500-$2,999",30903
+TAS,45-64,"$3,000 and above",6130
+TAS,65-84,Negative/Nil to $649,66729
+TAS,65-84,"$650-$1,499",22830
+TAS,65-84,"$1,500-$2,999",4928
+TAS,65-84,"$3,000 and above",1477
+TAS,85 years and over,Negative/Nil to $649,8424
+TAS,85 years and over,"$650-$1,499",1951
+TAS,85 years and over,"$1,500-$2,999",257
+TAS,85 years and over,"$3,000 and above",97
+ACT,15-24,Negative/Nil to $649,37068
+ACT,15-24,"$650-$1,499",16977
+ACT,15-24,"$1,500-$2,999",2940
+ACT,15-24,"$3,000 and above",132
+ACT,25-44,Negative/Nil to $649,21997
+ACT,25-44,"$650-$1,499",47866
+ACT,25-44,"$1,500-$2,999",58679
+ACT,25-44,"$3,000 and above",11595
+ACT,45-64,Negative/Nil to $649,17567
+ACT,45-64,"$650-$1,499",24946
+ACT,45-64,"$1,500-$2,999",39986
+ACT,45-64,"$3,000 and above",15272
+ACT,65-84,Negative/Nil to $649,23507
+ACT,65-84,"$650-$1,499",18367
+ACT,65-84,"$1,500-$2,999",8285
+ACT,65-84,"$3,000 and above",1977
+ACT,85 years and over,Negative/Nil to $649,3426
+ACT,85 years and over,"$650-$1,499",2026
+ACT,85 years and over,"$1,500-$2,999",544
+ACT,85 years and over,"$3,000 and above",141
+NT,15-24,Negative/Nil to $649,17450
+NT,15-24,"$650-$1,499",7260
+NT,15-24,"$1,500-$2,999",1254
+NT,15-24,"$3,000 and above",50
+NT,25-44,Negative/Nil to $649,20401
+NT,25-44,"$650-$1,499",25158
+NT,25-44,"$1,500-$2,999",20742
+NT,25-44,"$3,000 and above",2920
+NT,45-64,Negative/Nil to $649,14671
+NT,45-64,"$650-$1,499",13944
+NT,45-64,"$1,500-$2,999",15699
+NT,45-64,"$3,000 and above",3806
+NT,65-84,Negative/Nil to $649,10627
+NT,65-84,"$650-$1,499",4385
+NT,65-84,"$1,500-$2,999",1864
+NT,65-84,"$3,000 and above",509
+NT,85 years and over,Negative/Nil to $649,713
+NT,85 years and over,"$650-$1,499",174
+NT,85 years and over,"$1,500-$2,999",28
+NT,85 years and over,"$3,000 and above",8
+AUS,15-24,Negative/Nil to $649,2005841
+AUS,15-24,"$650-$1,499",730313
+AUS,15-24,"$1,500-$2,999",85592
+AUS,15-24,"$3,000 and above",6829
+AUS,25-44,Negative/Nil to $649,1593068
+AUS,25-44,"$650-$1,499",2709749
+AUS,25-44,"$1,500-$2,999",1891912
+AUS,25-44,"$3,000 and above",419849
+AUS,45-64,Negative/Nil to $649,1837345
+AUS,45-64,"$650-$1,499",2041486
+AUS,45-64,"$1,500-$2,999",1482355
+AUS,45-64,"$3,000 and above",514185
+AUS,65-84,Negative/Nil to $649,2384011
+AUS,65-84,"$650-$1,499",836345
+AUS,65-84,"$1,500-$2,999",237109
+AUS,65-84,"$3,000 and above",81302
+AUS,85 years and over,Negative/Nil to $649,345936
+AUS,85 years and over,"$650-$1,499",70407
+AUS,85 years and over,"$1,500-$2,999",14452
+AUS,85 years and over,"$3,000 and above",6025
+OT,15-24,Negative/Nil to $649,122
+OT,15-24,"$650-$1,499",66
+OT,15-24,"$1,500-$2,999",0
+OT,15-24,"$3,000 and above",0
+OT,25-44,Negative/Nil to $649,108
+OT,25-44,"$650-$1,499",203
+OT,25-44,"$1,500-$2,999",78
+OT,25-44,"$3,000 and above",8
+OT,45-64,Negative/Nil to $649,209
+OT,45-64,"$650-$1,499",334
+OT,45-64,"$1,500-$2,999",109
+OT,45-64,"$3,000 and above",16
+OT,65-84,Negative/Nil to $649,320
+OT,65-84,"$650-$1,499",111
+OT,65-84,"$1,500-$2,999",19
+OT,65-84,"$3,000 and above",6
+OT,85 years and over,Negative/Nil to $649,34
+OT,85 years and over,"$650-$1,499",7
+OT,85 years and over,"$1,500-$2,999",0
+OT,85 years and over,"$3,000 and above",0

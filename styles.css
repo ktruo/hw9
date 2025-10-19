@@ -102,7 +102,7 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
 .text p, .text a { overflow-wrap: anywhere; word-break: break-word; hyphens: auto; }
 
 /* Card containers for charts */
-#vis, #vis-turnout, #vis-seats, #vis-sankey {
+#vis, #vis-turnout, #vis-seats, #vis-sankey, #vis-age-income {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 12px;
@@ -159,11 +159,36 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
 .wrap p + #vis-seats,
 .wrap p + #vis-sankey { margin-top: 12px; }
 
+/* Grid for 9 small charts */
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px 16px;
+  width: 100%;
+}
+.chart-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px;
+  box-shadow: var(--shadow);
+  overflow: visible;
+  width: 100%;
+}
+
+/* Make full-bleed charts span both columns of grid-two */
+.grid-two .chart.full-bleed { grid-column: 1 / -1; }
+
 /* Responsive tweaks */
 @media (max-width: 900px) {
   .wrap { padding: 0 16px; }
   .grid-two { grid-template-columns: 1fr; }
   #vis, #vis-turnout { padding: 10px; }
+  .charts-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 640px) {
+  .charts-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 600px) {
