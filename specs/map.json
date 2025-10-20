@@ -47,7 +47,18 @@
         "reverse": true,
         "clamp": true
       },
-      "legend": { "format": "+.0f", "labelExpr": "datum.value + '%'" }
+      "legend": {
+        "format": "+.0f",
+        "labelExpr": "datum.value + '%'",
+        "orient": "none",
+        "legendX": 810,
+        "legendY": 28,
+        "gradientLength": 200,
+        "gradientThickness": 10,
+        "titleFontSize": 12,
+        "labelFontSize": 11,
+        "padding": 6
+      }
     },
     "tooltip": [
       { "field": "DivisionNameGeo", "type": "nominal", "title": "Division" },

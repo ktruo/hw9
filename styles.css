@@ -113,9 +113,58 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
   width: 100%;
 }
 
+/* Simple toolbar for map zoom controls */
+#map-zoom-controls {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 0 0 6px 0;
+}
+#map-zoom-controls label { color: #5b6475; font-weight: 600; margin-right: 6px; }
+#map-zoom-controls button {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: #f8fafc;
+  color: #1f2937;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+}
+#map-zoom-controls button:hover { background: #eef2f7; }
+
+/* Match select styling used elsewhere */
+#map-zoom-controls select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: #f8fafc;
+  color: #1f2937;
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 14px;
+}
+
 /* Vega embed container niceties */
 .vega-embed, .vega-embed details,
 .vega-embed summary { color: inherit; }
+
+/* Party emphasis helpers */
+.party-alp { color: #c62828; font-weight: 700; }
+.party-coalition { color: #1565c0; font-weight: 700; }
+
+/* Turnout state color helpers (match chart palette order) */
+.state-NSW { color: #1f77b4; }
+.state-VIC { color: #ff7f0e; }
+.state-QLD { color: #2ca02c; }
+.state-WA  { color: #d62728; }
+.state-SA  { color: #9467bd; }
+.state-TAS { color: #8c564b; }
+.state-ACT { color: #7f7f7f; }
+.state-NT  { color: #ff9da7; }
 
 /* Avoid scaling the Vega canvas via CSS (prevents tooltip offset) */
 
@@ -178,6 +227,17 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
 
 /* Make full-bleed charts span both columns of grid-two */
 .grid-two .chart.full-bleed { grid-column: 1 / -1; }
+/* Allow full-width text block in the income grid section */
+.income-grid .text { grid-column: 1 / -1; }
+/* In the income grid section, stack as a single column to let long commentary span full width */
+.income-grid .grid-two { grid-template-columns: 1fr; }
+
+/* Two-column prose helper for long explanations */
+/* Multi-column prose helpers */
+.two-col { column-count: 2; column-gap: 28px; }
+.three-col { column-count: 3; column-gap: 28px; }
+@media (max-width: 1200px) { .three-col { column-count: 2; } }
+@media (max-width: 900px)  { .two-col, .three-col { column-count: 1; } }
 
 /* Responsive tweaks */
 @media (max-width: 900px) {

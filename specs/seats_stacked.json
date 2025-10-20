@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "description": "Stacked/100%-stacked seats by party with toggle.",
-  "width": 1000,
+  "width": 800,
   "height": 380,
   "background": "white",
   "data": { "url": "../data/seats.csv", "format": { "type": "csv" } },
@@ -89,6 +89,11 @@
   "config": {
     "view": { "stroke": null },
     "axis": { "labelFontSize": 11, "titleFontSize": 12 },
-    "legend": { "titleFontSize": 12, "labelFontSize": 11 }
+    "legend": {
+      "titleFontSize": 12,
+      "labelFontSize": 11,
+      "orient": "right",
+      "direction": "vertical"
+    }
   }
 }

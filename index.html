@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -10,7 +10,7 @@
   <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.16.3"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.24.0"></script>
 
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=4" />
   <!-- Inline SVG favicon to avoid 404 for /favicon.ico -->
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' ry='8' fill='%2300447a'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' font-family='Segoe UI, Roboto, Arial' font-size='30' fill='white'%3EAU%3C/text%3E%3C/svg%3E" />
 </head>
@@ -19,7 +19,7 @@
   <header class="site-header">
     <div class="wrap">
       <h1 class="site-title">Australia Votes: A Nation Divided and Engaged</h1>
-      <p class="site-intro">Every few years, Australians head to the polls to choose who will lead the nation. Voting has become a familiar ritual, yet each election tells a new story about the countryâ€™s changing politics and levels of participation. This visual story looks at both where votes were won and how many Australians took part. Through an interactive map of the 2022 election and a line chart of turnout over time, it highlights the patterns, contrasts, and trends that shape Australia's democracy.</p>
+      <p class="site-intro">Every few years, Australians head to the polls to choose who will lead the nation. Voting has become a familiar ritual, yet each election tells a new story about the country's changing politics and levels of participation. This visual story looks at both where votes were won and how many Australians took part. Through an interactive map of the 2022 election and a line chart of turnout over time, it highlights the patterns, contrasts, and trends that shape Australia's democracy.</p>
     </div>
   </header>
 
@@ -31,20 +31,38 @@
     <div class="grid-two"><div class="text">
     <p>
       Colour shows % TPP relative to 50%.<br>
-      Red &gt; 50% ALP; Blue &gt; 50% Coalition. Hover for details.<br>
+      Red &gt; 50% <strong class="party-alp">ALP</strong>; Blue &gt; 50% <strong class="party-coalition">Coalition</strong>. Hover for details.<br>
       Data: <a href="https://results.aec.gov.au/27966/website/HouseDownloadsMenu-27966-Csv.htm">AEC</a>,
       boundaries: <a href="https://data.gov.au/data/dataset/commonwealth-electoral-divisions-as-at-2-august-2021">data.gov.au</a>.
     </p>
-    <p>The map shows how Australians voted in the 2022 federal election, comparing support for the two major political groups - the Australian Labor Party (ALP) and the Liberal-National Coalition. Each electorate is coloured by the two-party-preferred result, which represents which of the two main sides received more votes after preferences were distributed. Shades of red indicate areas where Labor gained the majority, while shades of blue show where the Coalition led. By looking across the country, we can see clear patterns: Labor's strength is concentrated in urban and coastal regions, while the Coalition continues to perform strongly in many rural areas. Together, these colours reveal the political landscape that shaped the 2022 outcome and the regional divides within Australia's democracy.</p>
+    <p>The map shows how Australians voted in the 2022 federal election, comparing support for the two major political groups â€” the Australian <strong class="party-alp">Labor</strong> Party (<strong class="party-alp">ALP</strong>) and the Liberalâ€‘National <strong class="party-coalition">Coalition</strong>. Each electorate is coloured by the twoâ€‘partyâ€‘preferred result, which represents which of the two main sides received more votes after preferences were distributed. Shades of red indicate areas where <strong class="party-alp">Labor</strong> gained the majority, while shades of blue show where the <strong class="party-coalition">Coalition</strong> led. By looking across the country, we can see clear patterns: <strong class="party-alp">Labor</strong>'s strength is concentrated in urban and coastal regions, while the <strong class="party-coalition">Coalition</strong> continues to perform strongly in many rural areas. Together, these colours reveal the political landscape that shaped the 2022 outcome and the regional divides within Australia's democracy.</p>
     </div><div class="chart">
+    <div id="map-zoom-controls" aria-label="Map zoom controls">
+      <label for="map-fit-state">Fit to:</label>
+      <select id="map-fit-state" title="Fit view to state">
+        <option value="AUS">Australia</option>
+        <option value="NSW">NSW</option>
+        <option value="VIC">VIC</option>
+        <option value="QLD">QLD</option>
+        <option value="WA">WA</option>
+        <option value="SA">SA</option>
+        <option value="TAS">TAS</option>
+        <option value="ACT">ACT</option>
+        <option value="NT">NT</option>
+      </select>
+      <button type="button" id="map-zoom-out" title="Zoom out">-</button>
+      <button type="button" id="map-zoom-in" title="Zoom in">+</button>
+      <button type="button" id="map-zoom-reset" title="Reset view">Reset</button>
+    </div>
     <div id="vis"></div>
     </div></div></section>
 
     <!-- ===================== AGE x INCOME (STATE GRID) ===================== -->
-    <section class="viz-section">
+    <section class="viz-section income-grid">
       <h2>Income brackets by age group (by state)</h2>
       <div class="grid-two"><div class="text">
-        <p>Each panel shows a state/territory. Heatmap cells at Age group × Income bracket are colored by the number of people. Data is pre-binned for readability.</p>
+        <p>Each panel shows a state/territory. Heatmap cells at Age group x Income bracket are colored by the number of people. Data is pre-binned for readability.</p>
+        <p class="three-col">This 3x3 heatmap compares Age group x Income brackets (columns) for each state and territory, plus Australia overall. A clear pattern appears across the country: younger people (15-24) cluster in the lowest income brackets, the mid-working years (25-54) concentrate in the middle brackets, and the share tapers for the highest brackets, especially in older ages. States with larger capital-city populations like NSW and VIC show a stronger middle-to-upper income band in the 25-54 range, while WA also presents a pronounced mid-to-upper band consistent with its resources economy. ACT skews relatively high across working ages, reflecting its public-sector wage profile, whereas NT shows a flatter spread and fewer cells in the highest brackets. Read alongside the choropleth map, which highlights where the two major political groups led by division, these income-age profiles hint at the different social and economic make-ups behind those geographic results: urbanised states with more mid-to-higher-income working-age residents map to the big city belts on the choropleth, while jurisdictions with broader spreads or lower average incomes align more with regional and remote areas. This does not claim causation, but it gives helpful context for interpreting the electoral landscape.</p>
       </div><div class="chart full-bleed">
         <div id="vis-age-income-grid" class="charts-grid">
           <div id="vis-age-income-NSW" class="chart-card"></div>
@@ -64,8 +82,8 @@
     <section class="viz-section">
     <h2>Voter turnout over time (filter by state)</h2>
     <div class="grid-two"><div class="text">
-    <p>Use the dropdown to filter; choose â€œAllâ€ to show every state.</p>
-    <p>The line chart tracks how voter turnout has changed across Australia's states and territories over recent federal elections. Each line represents one state or territory, showing the percentage of enrolled voters who cast a valid vote. While voting in Australia is compulsory, turnout still fluctuates slightly between elections and regions. Some areas, such as the Northern Territory, often record lower participation, partly due to distance and access to polling places. In contrast, states like Victoria and New South Wales tend to remain consistently high. Together, these trends reveal that even in a system where everyone must vote, levels of civic engagement can still vary - reflecting differences in demographics, access, and interest over time.</p>
+    <p>Use the dropdown to filter; choose &quot;All&quot; to show every state.</p>
+    <p>The line chart tracks how voter turnout has changed across Australia's states and territories over recent federal elections. Each line represents one state or territory, showing the percentage of enrolled voters who cast a valid vote. While voting in Australia is compulsory, turnout still fluctuates slightly between elections and regions. Some areas, such as the <span class="state-NT">Northern Territory</span>, often record lower participation, partly due to distance and access to polling places. In contrast, states like <span class="state-VIC">Victoria</span> and <span class="state-NSW">New South Wales</span> tend to remain consistently high. Together, these trends reveal that even in a system where everyone must vote, levels of civic engagement can still vary  -  reflecting differences in demographics, access, and interest over time.</p>
     </div><div class="chart">
     <div id="vis-turnout"></div>
     </div></div></section>
@@ -139,7 +157,7 @@
       "color": {
         "field": "margin_alp",
         "type": "quantitative",
-        "title": "TPP margin (ALP â€“ 50%)",
+        "title": "TPP margin (ALP Ã¢â‚¬â€œ 50%)",
         "scale": { "scheme": "redblue", "domain": [-20, 0, 20] },
         "legend": { "format": "+.0f", "labelExpr": "datum.value + '%'" }
       },
@@ -256,6 +274,209 @@
   })();
   // Prefer a lighter TopoJSON if available; fall back to existing spec
   (async () => {
+    // Simple projection-scale zoom controls (re-embeds the map)
+    let mapBaseSpec = null;
+    let mapBaseScale = 850; // default from specs/map.json
+    let mapZoom = 1;
+    let mapCenter = null; // [lon, lat]
+    let mapCentroids = null; // Division -> [lon,lat]
+    let stateFit = null; // { AUS: {center:[lon,lat], lonRange, yRange}, NSW: {...}, ... }
+    let currentView = null;
+
+    const controls = {
+      in: document.getElementById('map-zoom-in'),
+      out: document.getElementById('map-zoom-out'),
+      reset: document.getElementById('map-zoom-reset')
+    };
+
+    function deepClone(obj){ return JSON.parse(JSON.stringify(obj)); }
+    async function renderMap() {
+      if (!mapBaseSpec) return;
+      const spec = deepClone(mapBaseSpec);
+      try {
+        if (!spec.projection) spec.projection = { type: 'mercator', center: [134, -26], scale: mapBaseScale };
+        const base = typeof spec.projection.scale === 'number' ? spec.projection.scale : mapBaseScale;
+        spec.projection.scale = Math.max(200, Math.min(8000, base * mapZoom));
+        if (Array.isArray(mapCenter) && mapCenter.length === 2) {
+          spec.projection.center = mapCenter;
+        }
+      } catch {}
+      const res = await vegaEmbed("#vis", spec, { actions: false, loader: loaderOpts });
+      currentView = res && res.view ? res.view : null;
+      wireViewHandlers();
+    }
+    function wireControls(){
+      if (!controls.in || controls.in.dataset.bound) return; // already wired
+      controls.in.addEventListener('click', () => { mapZoom *= 1.25; renderMap(); });
+      controls.out.addEventListener('click', () => { mapZoom /= 1.25; renderMap(); });
+      controls.reset.addEventListener('click', () => { mapZoom = 1; renderMap(); });
+      const sel = document.getElementById('map-fit-state');
+      if (sel) {
+        sel.addEventListener('change', () => {
+          const v = sel.value || 'AUS';
+          fitToState(v);
+        });
+      }
+      controls.in.dataset.bound = '1';
+      controls.out.dataset.bound = '1';
+      controls.reset.dataset.bound = '1';
+    }
+
+    // Scroll-wheel zoom disabled; use buttons or click-to-zoom
+
+    // Click-to-zoom: recenter on clicked division
+    function wireViewHandlers(){
+      if (!currentView || currentView.__clickBound) return;
+      const handler = (event, item) => {
+        try {
+          const d = item && item.datum ? item.datum : null;
+          const name = d && (d.DivisionNameGeo || d.properties && d.properties.Elect_div);
+          if (!name || !mapCentroids) return;
+          const c = mapCentroids[name];
+          if (!c) return;
+          mapCenter = c;
+          mapZoom = Math.min(8, mapZoom * 1.6);
+          renderMap();
+        } catch {}
+      };
+      currentView.addEventListener('click', handler);
+      currentView.__clickBound = true;
+    }
+
+    // Prepare centroids for recentering by division name
+    async function prepareCentroids(){
+      if (mapCentroids) return mapCentroids;
+      try {
+        const url = new URL('data/ced_2021.geojson', pageBase).href;
+        const res = await fetch(url, { cache: 'no-cache' });
+        if (!res.ok) return null;
+        const gj = await res.json();
+        const feats = Array.isArray(gj.features) ? gj.features : [];
+        const out = {};
+        // Build division->state map from CSV
+        let divToState = {};
+        try {
+          const csvUrl = new URL('data/tpp_2022.csv', pageBase).href;
+          const csvRes = await fetch(csvUrl, { cache: 'no-cache' });
+          if (csvRes.ok) {
+            const text = await csvRes.text();
+            const rows = text.split(/\r?\n/).filter(Boolean);
+            const header = rows.shift();
+            const cols = header.split(',');
+            const iDiv = cols.indexOf('DivisionNm');
+            const iState = cols.indexOf('StateAb');
+            const split = (line) => line.match(/\"[^\"]*\"|[^,]+/g).map(s => s.replace(/^\"|\"$/g,''));
+            for (const line of rows) {
+              const parts = split(line);
+              if (parts[iDiv] && parts[iState]) divToState[parts[iDiv]] = parts[iState];
+            }
+          }
+        } catch {}
+
+        // Track bounds for AUS and for each state
+        const bounds = { AUS: { lonMin: 180, lonMax: -180, latMin: 90, latMax: -90 } };
+        for (const code of ['NSW','VIC','QLD','WA','SA','TAS','ACT','NT']) {
+          bounds[code] = { lonMin: 180, lonMax: -180, latMin: 90, latMax: -90 };
+        }
+
+        for (const f of feats) {
+          const name = f && f.properties && (f.properties.Elect_div || f.properties.DivisionNm);
+          const g = f && f.geometry;
+          const c = centroidLngLat(g);
+          if (name && c) out[name] = c;
+          // expand overall and per-state bounds
+          const update = (B, lon, lat) => {
+            if (lon < B.lonMin) B.lonMin = lon;
+            if (lon > B.lonMax) B.lonMax = lon;
+            if (lat < B.latMin) B.latMin = lat;
+            if (lat > B.latMax) B.latMax = lat;
+          };
+          const walk = (coords) => {
+            for (const [lon, lat] of coords) update(bounds.AUS, lon, lat);
+          };
+          if (g) {
+            const code = name && divToState[name];
+            const target = code && bounds[code] ? bounds[code] : null;
+            if (g.type === 'Polygon') {
+              const ring = g.coordinates[0] || [];
+              walk(ring);
+              if (target) for (const [lon, lat] of ring) update(target, lon, lat);
+            } else if (g.type === 'MultiPolygon') {
+              for (const poly of g.coordinates) {
+                const ring = poly[0] || [];
+                walk(ring);
+                if (target) for (const [lon, lat] of ring) update(target, lon, lat);
+              }
+            }
+          }
+        }
+        // Convert bounds to fit metadata
+        const toFit = (B) => {
+          const lonRange = B.lonMax - B.lonMin;
+          const y = (lat) => Math.log(Math.tan(Math.PI/4 + (Math.max(Math.min(lat, 89.9), -89.9) * Math.PI/180)/2));
+          const yRange = Math.abs(y(B.latMax) - y(B.latMin));
+          const center = [(B.lonMin + B.lonMax)/2, (B.latMin + B.latMax)/2];
+          return { center, lonRange, yRange };
+        };
+        stateFit = {};
+        for (const k of Object.keys(bounds)) stateFit[k] = toFit(bounds[k]);
+        mapCentroids = out;
+      } catch (e) { console.warn('centroid prep failed', e); }
+      return mapCentroids;
+    }
+
+    function fitToState(code){
+      if (!stateFit || !stateFit.AUS) return;
+      const au = stateFit.AUS;
+      const tgt = stateFit[code] || au;
+      mapCenter = tgt.center;
+      const pad = 0.90; // leave a little margin
+      const ratioLon = au.lonRange / Math.max(0.0001, tgt.lonRange);
+      const ratioY = au.yRange / Math.max(0.0001, tgt.yRange);
+      const factor = Math.min(ratioLon, ratioY) * pad;
+      mapZoom = Math.max(0.1, Math.min(20, factor));
+      renderMap();
+    }
+    function centroidLngLat(geom){
+      if (!geom) return null;
+      const type = geom.type;
+      const coords = geom.coordinates;
+      const polyCentroid = (ring) => {
+        // ring: [[lon,lat], ...]
+        let a = 0, cx = 0, cy = 0;
+        for (let i=0, n=ring.length; i<n; i++){
+          const [x1,y1] = ring[i];
+          const [x2,y2] = ring[(i+1)%n];
+          const cross = x1*y2 - x2*y1;
+          a += cross;
+          cx += (x1 + x2) * cross;
+          cy += (y1 + y2) * cross;
+        }
+        a *= 0.5;
+        if (!a) return null;
+        return [cx/(6*a), cy/(6*a)];
+      };
+      if (type === 'Polygon'){
+        return polyCentroid(coords[0]);
+      } else if (type === 'MultiPolygon'){
+        let best = null; let bestArea = -Infinity;
+        for (const poly of coords){
+          const c = polyCentroid(poly[0]);
+          if (c){
+            // approximate area by absolute a; recompute
+            let a = 0; const ring = poly[0];
+            for (let i=0, n=ring.length; i<n; i++){
+              const [x1,y1] = ring[i]; const [x2,y2] = ring[(i+1)%n];
+              a += (x1*y2 - x2*y1);
+            }
+            a = Math.abs(a*0.5);
+            if (a > bestArea){ bestArea = a; best = c; }
+          }
+        }
+        return best;
+      }
+      return null;
+    }
     try {
       const tryTopo = new URLSearchParams(window.location.search).get("topo") === "1";
 
@@ -280,17 +501,28 @@
               url: new URL("data/ced_2021.topo.json", pageBase).href,
               format: { type: "topojson", feature: featureName }
             };
-            return vegaEmbed("#vis", specJson, { actions: false, loader: loaderOpts });
+            mapBaseSpec = specJson;
+            wireControls();
+            await prepareCentroids();
+            return renderMap();
           }
         }
         // Fallback to GeoJSON if topo not available/usable
         if (specJson) {
-          return vegaEmbed("#vis", specJson, { actions: false, loader: loaderOpts });
+          mapBaseSpec = specJson;
+          try { if (mapBaseSpec && mapBaseSpec.projection && typeof mapBaseSpec.projection.scale === 'number') { mapBaseScale = mapBaseSpec.projection.scale; } } catch {}
+          wireControls();
+          await prepareCentroids();
+          return renderMap();
         }
       } else {
         // Default path: do not attempt TopoJSON (avoids 404 noise), just use rewritten GeoJSON spec
         const specJson = await fetchAndRewriteSpec("specs/map.json?v=3");
-        return vegaEmbed("#vis", specJson, { actions: false, loader: loaderOpts });
+        mapBaseSpec = specJson;
+        try { if (mapBaseSpec && mapBaseSpec.projection && typeof mapBaseSpec.projection.scale === 'number') { mapBaseScale = mapBaseSpec.projection.scale; } } catch {}
+        wireControls();
+        await prepareCentroids();
+        return renderMap();
       }
 
       // If spec fetch failed entirely, last resort
@@ -332,7 +564,11 @@
       "y": { "field": "TurnoutPct", "type": "quantitative", "title": "Turnout (%)" },
       "color": {
         "field": "State", "type": "nominal", "title": "State/Territory",
-        "sort": ["NSW","VIC","QLD","WA","SA","TAS","ACT","NT"]
+        "sort": ["NSW","VIC","QLD","WA","SA","TAS","ACT","NT"],
+        "scale": {
+          "domain": ["NSW","VIC","QLD","WA","SA","TAS","ACT","NT"],
+          "range": ["#1f77b4","#ff7f0e","#2ca02c","#d62728","#9467bd","#8c564b","#7f7f7f","#ff9da7"]
+        }
       },
       "tooltip": [
         { "field": "Year", "type": "quantitative" },
@@ -353,4 +589,10 @@
 
 </body>
 </html>
+
+
+
+
+
+
 
