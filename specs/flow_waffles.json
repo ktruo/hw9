@@ -1,0 +1,63 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Preference flows from minor parties to majors, shown as small-multiple 10x10 waffles (ALP vs Coalition).",
+  "autosize": { "type": "fit-x", "contains": "padding" },
+  "background": "white",
+
+  "data": { "url": "../data/flow.csv", "format": { "type": "csv", "parse": { "value": "number" } } },
+
+  "transform": [
+    { "aggregate": [{ "op": "sum", "field": "value", "as": "pct" }], "groupby": ["source", "target"] },
+    { "filter": "datum.target == 'ALP'" },
+    { "calculate": "datum.pct", "as": "alp_pct" },
+    { "calculate": "100 - datum.alp_pct", "as": "coal_pct" },
+    { "calculate": "range(0, 100)", "as": "tile" },
+    { "flatten": ["tile"], "as": ["tile"] },
+    { "calculate": "datum.tile % 10", "as": "col" },
+    { "calculate": "floor(datum.tile / 10)", "as": "row" },
+    { "calculate": "datum.tile < round(datum.alp_pct) ? 'ALP' : 'Coalition'", "as": "to" }
+  ],
+
+  "facet": {
+    "field": "source",
+    "type": "nominal",
+    "title": null,
+    "columns": 4,
+    "sort": { "field": "alp_pct", "op": "max", "order": "descending" }
+  },
+
+  "spec": {
+    "width": 120,
+    "height": 120,
+    "mark": { "type": "rect" },
+    "encoding": {
+      "x": { "field": "col", "type": "ordinal", "axis": null, "sort": "ascending" },
+      "y": { "field": "row", "type": "ordinal", "axis": null, "sort": "descending" },
+      "color": {
+        "field": "to",
+        "type": "nominal",
+        "title": null,
+        "scale": { "domain": ["ALP", "Coalition"], "range": ["#d32f2f", "#1976d2"] },
+        "legend": { "orient": "bottom", "direction": "horizontal", "labelFontSize": 11 }
+      },
+      "tooltip": [
+        { "field": "source", "type": "nominal", "title": "Minor party" },
+        { "field": "alp_pct", "type": "quantitative", "title": "ALP prefs", "format": ".2f" },
+        { "field": "coal_pct", "type": "quantitative", "title": "Coalition prefs", "format": ".2f" }
+      ]
+    }
+  },
+
+  "config": {
+    "view": { "stroke": null },
+    "axis": { "labelFontSize": 11, "titleFontSize": 12 },
+    "facet": { "spacing": 16 },
+    "header": {
+      "labelFontSize": 12,
+      "labelLimit": 160,
+      "labelColor": "#333",
+      "labelFontWeight": "bold"
+    },
+    "legend": { "title": "To major", "titleFontSize": 12, "labelFontSize": 11 }
+  }
+}

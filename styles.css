@@ -208,6 +208,7 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
 .wrap p + #vis-seats,
 .wrap p + #vis-sankey { margin-top: 12px; }
 
+
 /* Grid for 9 small charts */
 .charts-grid {
   display: grid;

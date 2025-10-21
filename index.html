@@ -36,6 +36,7 @@
       boundaries: <a href="https://data.gov.au/data/dataset/commonwealth-electoral-divisions-as-at-2-august-2021">data.gov.au</a>.
     </p>
     <p>The map shows how Australians voted in the 2022 federal election, comparing support for the two major political groups â€” the Australian <strong class="party-alp">Labor</strong> Party (<strong class="party-alp">ALP</strong>) and the Liberalâ€‘National <strong class="party-coalition">Coalition</strong>. Each electorate is coloured by the twoâ€‘partyâ€‘preferred result, which represents which of the two main sides received more votes after preferences were distributed. Shades of red indicate areas where <strong class="party-alp">Labor</strong> gained the majority, while shades of blue show where the <strong class="party-coalition">Coalition</strong> led. By looking across the country, we can see clear patterns: <strong class="party-alp">Labor</strong>'s strength is concentrated in urban and coastal regions, while the <strong class="party-coalition">Coalition</strong> continues to perform strongly in many rural areas. Together, these colours reveal the political landscape that shaped the 2022 outcome and the regional divides within Australia's democracy.</p>
+    <p id="tpp-desc-clean">The map shows how Australians voted in the 2022 federal election, comparing support for the two major political groups - the Australian <strong class="party-alp">Labour</strong> Party (<strong class="party-alp">ALP</strong>) and the Liberal-National <strong class="party-coalition">Coalition</strong>. Each electorate is coloured by the two-party-preferred result, which represents which of the two main sides received more votes after preferences were distributed. Shades of red indicate areas where <strong class="party-alp">Labour</strong> gained the majority, while shades of blue show where the <strong class="party-coalition">Coalition</strong> led. By looking across the country, we can see clear patterns: <strong class="party-alp">Labour</strong>'s strength is concentrated in urban and coastal regions, while the <strong class="party-coalition">Coalition</strong> continues to perform strongly in many rural areas. Together, these colours reveal the political landscape that shaped the 2022 outcome and the regional divides within Australia's democracy.</p>
     </div><div class="chart">
     <div id="map-zoom-controls" aria-label="Map zoom controls">
       <label for="map-fit-state">Fit to:</label>
@@ -61,7 +62,7 @@
     <section class="viz-section income-grid">
       <h2>Income brackets by age group (by state)</h2>
       <div class="grid-two"><div class="text">
-        <p>Each panel shows a state/territory. Heatmap cells at Age group x Income bracket are colored by the number of people. Data is pre-binned for readability.</p>
+        <p>Each panel shows a state/territory. Heatmap cells at Age group x Income bracket are colored by the number of people. Data is pre-binned for readability. Data: <a href="https://digital.atlas.gov.au/datasets/digitalatlas::abs-2021-census-g17-total-personal-income-weekly-by-age-by-sex-by-2021-lga/explore?location=-22.366853%2C132.407488%2C5.00" target="_blank" rel="noopener">ABS 2021 Census G17 (Digital Atlas)</a>.</p>
         <p class="three-col">This 3x3 heatmap compares Age group x Income brackets (columns) for each state and territory, plus Australia overall. A clear pattern appears across the country: younger people (15-24) cluster in the lowest income brackets, the mid-working years (25-54) concentrate in the middle brackets, and the share tapers for the highest brackets, especially in older ages. States with larger capital-city populations like NSW and VIC show a stronger middle-to-upper income band in the 25-54 range, while WA also presents a pronounced mid-to-upper band consistent with its resources economy. ACT skews relatively high across working ages, reflecting its public-sector wage profile, whereas NT shows a flatter spread and fewer cells in the highest brackets. Read alongside the choropleth map, which highlights where the two major political groups led by division, these income-age profiles hint at the different social and economic make-ups behind those geographic results: urbanised states with more mid-to-higher-income working-age residents map to the big city belts on the choropleth, while jurisdictions with broader spreads or lower average incomes align more with regional and remote areas. This does not claim causation, but it gives helpful context for interpreting the electoral landscape.</p>
       </div><div class="chart full-bleed">
         <div id="vis-age-income-grid" class="charts-grid">
@@ -82,7 +83,7 @@
     <section class="viz-section">
     <h2>Voter turnout over time (filter by state)</h2>
     <div class="grid-two"><div class="text">
-    <p>Use the dropdown to filter; choose &quot;All&quot; to show every state.</p>
+    <p>Use the dropdown to filter; choose &quot;All&quot; to show every state. Data: <a href="https://results.aec.gov.au/" target="_blank" rel="noopener">AEC</a>.</p>
     <p>The line chart tracks how voter turnout has changed across Australia's states and territories over recent federal elections. Each line represents one state or territory, showing the percentage of enrolled voters who cast a valid vote. While voting in Australia is compulsory, turnout still fluctuates slightly between elections and regions. Some areas, such as the <span class="state-NT">Northern Territory</span>, often record lower participation, partly due to distance and access to polling places. In contrast, states like <span class="state-VIC">Victoria</span> and <span class="state-NSW">New South Wales</span> tend to remain consistently high. Together, these trends reveal that even in a system where everyone must vote, levels of civic engagement can still vary  -  reflecting differences in demographics, access, and interest over time.</p>
     </div><div class="chart">
     <div id="vis-turnout"></div>
@@ -92,8 +93,8 @@
     <section class="viz-section">
       <h2>Seats by party (House of Representatives)</h2>
       <div class="grid-two"><div class="text">
-        <p>Stacked bars show the total seats held by each major party at each election year.</p>
-        <p>###########</p>
+        <p>Stacked bars show the total seats held by each major party at each election year. Data: <a href="https://results.aec.gov.au/" target="_blank" rel="noopener">AEC</a>.</p>
+        <p>Across all elections shown, most seats are held by the two major blocs: the Australian <span class="party-alp">Labour</span> Party (ALP) and the Liberal-National <span class="party-coalition">Coalition</span>. This 100%-stacked bar chart compares their share of House seats by year. Columns are normalised to the two majors (crossbench seats are not shown), so each bar sums to 100% and the split indicates which side held more of the majors' seats in that year. The <span class="party-coalition">Coalition</span>'s share peaks in 2013, while <span class="party-alp">Labour</span>'s share lifts sharply in 2022. Read together with the choropleth map, this connects the national seat balance to the geographic patterns of support.</p>
       </div><div class="chart">
         <div id="vis-seats"></div>
       </div></div>
@@ -101,11 +102,12 @@
 
     <!-- (Income brackets grid moved above, duplicate removed) -->
 
-    <!-- ===================== PREFERENCE FLOWS (SANKEY) ===================== -->
+    <!-- ===================== PREFERENCE FLOWS (DUMBBELL) ===================== -->
     <section class="viz-section">
       <h2>Preference flows between parties</h2>
+      <p>Dumbbell chart showing preference share to <span class="party-alp">Labour</span> vs <span class="party-coalition">Coalition</span>. Data: <a href="https://results.aec.gov.au/27966/Website/HouseStateTppFlow-27966-NAT.htm" target="_blank" rel="noopener">AEC TPP preference flows (2022)</a>.</p>
       <div class="grid-two"><div class="text">
-        <p>Flows from minor parties to ALP or Coalition, sized by percentage.</p>
+        <p>In Australia's voting system, people number candidates in the order they prefer. If no one gets over 50% of first-preference votes, the candidate with the fewest is knocked out and those ballots move to the next choice. These movements are called preference flows. The dumbbell chart shows, for each minor party, what share of its voters' preferences flowed to <span class="party-alp">Labour</span> or to the <span class="party-coalition">Coalition</span>. Big picture: Greens preferences go mostly to <span class="party-alp">Labour</span> (around the mid-80s). Reason and Victorian Socialists are also strongly pro-<span class="party-alp">Labour</span>. Liberal Democrats, One Nation and United Australia preferences tend to flow to the <span class="party-coalition">Coalition</span> (about 60-70%). Remember this shows percentages of each party's preferences, not how many ballots they had in total.</p>
       </div><div class="chart">
         <div id="vis-sankey"></div>
       </div></div>
@@ -217,9 +219,86 @@
     .then(spec => vegaEmbed("#vis-seats", spec, { actions: false, loader: loaderOpts }))
     .catch(err => console.error("seats embed error", err));
 
-  fetchAndRewriteSpec("specs/bipartite_flow.json?v=9")
-    .then(spec => vegaEmbed("#vis-sankey", spec, { actions: false, loader: loaderOpts }))
-    .catch(err => console.error("sankey embed error", err));
+  // Inline dumbbell spec (no external fetch) using inlined data
+  try {
+    const flowDumbbellSpec = {
+      $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+      description: "Preference flows to ALP vs Coalition by minor party (dumbbell).",
+      autosize: { type: "fit-x", contains: "padding" },
+      width: "container",
+      height: 480,
+      background: "white",
+      data: {
+        values: [
+          { source: "Greens", ALP: 85.66, Coalition: 14.34 },
+          { source: "United Australia Party", ALP: 38.14, Coalition: 61.86 },
+          { source: "Pauline Hanson's One Nation", ALP: 35.70, Coalition: 64.30 },
+          { source: "Independents", ALP: 63.77, Coalition: 36.23 },
+          { source: "Katter's Australian Party", ALP: 38.69, Coalition: 61.31 },
+          { source: "Liberal Democratic Party", ALP: 28.19, Coalition: 71.81 },
+          { source: "Centre Alliance", ALP: 60.24, Coalition: 39.76 },
+          { source: "Animal Justice Party", ALP: 63.71, Coalition: 36.29 },
+          { source: "Legalise Cannabis Australia", ALP: 57.28, Coalition: 42.72 },
+          { source: "Reason Australia", ALP: 80.73, Coalition: 19.27 },
+          { source: "Victorian Socialists", ALP: 83.45, Coalition: 16.55 },
+          { source: "Shooters Fishers and Farmers Party", ALP: 41.39, Coalition: 58.61 },
+          { source: "Jacqui Lambie Network", ALP: 59.09, Coalition: 40.91 }
+        ]
+      },
+      transform: [
+        { calculate: "datum.ALP", as: "alp_pct" },
+        { calculate: "datum['Coalition']", as: "coal_pct" },
+        { calculate: "datum.alp_pct < datum.coal_pct ? datum.alp_pct : datum.coal_pct", as: "xMin" },
+        { calculate: "datum.alp_pct > datum.coal_pct ? datum.alp_pct : datum.coal_pct", as: "xMax" },
+        { fold: ["ALP", "Coalition"], as: ["target", "pct"] }
+      ],
+      layer: [
+        {
+          mark: { type: "rule", stroke: "#9aa0a6", strokeWidth: 2 },
+          encoding: {
+            y: { field: "source", type: "nominal", title: null, sort: { field: "alp_pct", order: "descending" } },
+            x: { field: "xMin", type: "quantitative", title: "Preference share (%)", scale: { domain: [0, 100] }, axis: { format: ".0f" } },
+            x2: { field: "xMax" }
+          }
+        },
+        {
+          transform: [ { filter: "datum.target == 'ALP'" } ],
+          mark: { type: "point", filled: true, size: 90, stroke: "white", strokeWidth: 1.5 },
+          encoding: {
+            y: { field: "source", type: "nominal", sort: { field: "alp_pct", order: "descending" } },
+            x: { field: "pct", type: "quantitative" },
+            color: { value: "#d32f2f" },
+            tooltip: [
+              { field: "source", type: "nominal", title: "Minor party" },
+              { field: "alp_pct", type: "quantitative", title: "To ALP", format: ".2f" },
+              { field: "coal_pct", type: "quantitative", title: "To Coalition", format: ".2f" }
+            ]
+          }
+        },
+        {
+          transform: [ { filter: "datum.target == 'Coalition'" } ],
+          mark: { type: "point", filled: true, size: 90, stroke: "white", strokeWidth: 1.5 },
+          encoding: {
+            y: { field: "source", type: "nominal", sort: { field: "alp_pct", order: "descending" } },
+            x: { field: "pct", type: "quantitative" },
+            color: { value: "#1976d2" },
+            tooltip: [
+              { field: "source", type: "nominal", title: "Minor party" },
+              { field: "alp_pct", type: "quantitative", title: "To ALP", format: ".2f" },
+              { field: "coal_pct", type: "quantitative", title: "To Coalition", format: ".2f" }
+            ]
+          }
+        }
+      ],
+      config: {
+        view: { stroke: null },
+        axis: { labelFontSize: 11, titleFontSize: 12 }
+      }
+    };
+    vegaEmbed("#vis-sankey", flowDumbbellSpec, { actions: false, loader: loaderOpts });
+  } catch (e) {
+    console.error("inline dumbbell embed error", e);
+  }
 
   console.log("embedding age-income grid (9 embeds)...");
   const binnedCsvUrl = (() => { try { return new URL("data/age_income_binned.csv", pageBase).href; } catch { return "data/age_income_binned.csv"; } })();
@@ -585,6 +664,33 @@
   };
 
   // (moved above with error handlers)
+  // Normalize spelling: replace 'Labor' -> 'Labour' in party-aligned labels
+  try {
+    document.querySelectorAll('.party-alp').forEach(el => {
+      if (el && typeof el.textContent === 'string' && el.textContent.trim() === 'Labor') {
+        el.textContent = 'Labour';
+      }
+    });
+  } catch {}
+  // Fix mojibake in the TPP map paragraph by replacing its HTML content explicitly
+  try {
+    const p = Array.from(document.querySelectorAll('p')).find(el => (el.textContent||'').startsWith('The map shows how Australians voted'));
+    if (p) {
+      p.innerHTML = `The map shows how Australians voted in the 2022 federal election, comparing support for the two major political groups — the Australian <strong class="party-alp">Labour</strong> Party (<strong class="party-alp">ALP</strong>) and the Liberal–National <strong class="party-coalition">Coalition</strong>. Each electorate is coloured by the two‑party‑preferred result, which represents which of the two main sides received more votes after preferences were distributed. Shades of red indicate areas where <strong class="party-alp">Labour</strong> gained the majority, while shades of blue show where the <strong class="party-coalition">Coalition</strong> led. By looking across the country, we can see clear patterns: <strong class="party-alp">Labour</strong>'s strength is concentrated in urban and coastal regions, while the <strong class="party-coalition">Coalition</strong> continues to perform strongly in many rural areas. Together, these colours reveal the political landscape that shaped the 2022 outcome and the regional divides within Australia's democracy.`;
+    }
+  } catch {}
+  </script>
+
+  <script>
+  // Remove the original TPP paragraph (second <p> in the first viz-section)
+  try {
+    const firstViz = document.querySelector('.wrap > .viz-section');
+    const textDiv = firstViz ? firstViz.querySelector('.grid-two .text') : null;
+    if (textDiv) {
+      const ps = textDiv.querySelectorAll('p');
+      if (ps.length >= 2) ps[1].remove();
+    }
+  } catch (e) { /* no-op */ }
   </script>
 
 </body>
