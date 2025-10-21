@@ -105,6 +105,9 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
   box-shadow: var(--shadow);
 }
 
+/* Hide duplicate descriptive paragraph in TPP map section */
+#tpp-map .text p:nth-of-type(2):not(#tpp-desc-clean) { display: none; }
+
 .grid-two {
   display: grid;
   /* Ensure the chart column can fully contain a 1000px-wide map + padding/border */
