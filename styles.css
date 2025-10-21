@@ -23,7 +23,8 @@ html, body { height: 100%; }
 body {
   margin: 0;
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  background: var(--bg);
+  background: url('Parliament_House_at_dusk,_Canberra_ACT.jpg') center top / cover no-repeat fixed;
+  background-color: var(--bg);
   color: var(--text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -33,6 +34,15 @@ body {
   border-bottom: 1px solid rgba(0,0,0,0.08);
   margin: 0 0 12px;
   background: linear-gradient(180deg, rgba(0,0,0,0.03), rgba(0,0,0,0));
+}
+
+/* Keep the header in a white card, independent of main .wrap background */
+.site-header .wrap {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px 20px;
+  box-shadow: var(--shadow);
 }
 
 .site-title {
@@ -48,6 +58,8 @@ body {
   max-width: 1500px;
   margin: 28px auto 64px;
   padding: 0 20px;
+  /* Transparent so page background shows between section cards */
+  background: transparent;
 }
 
 h1, h2 {
@@ -88,7 +100,14 @@ a {
 a:hover { color: var(--link-hover); text-decoration: underline; }
 
 /* Sections and grid layout */
-.viz-section { margin: 8px 0 32px; }
+.viz-section {
+  margin: 8px 0 32px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px 20px;
+  box-shadow: var(--shadow);
+}
 
 .grid-two {
   display: grid;
@@ -246,6 +265,7 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
   .grid-two { grid-template-columns: 1fr; }
   #vis, #vis-turnout { padding: 10px; }
   .charts-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  body { background-attachment: scroll; }
 }
 
 @media (max-width: 640px) {
