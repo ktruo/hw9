@@ -3,7 +3,7 @@
   "width": 1000,
   "height": 620,
   "background": "white",
-  "projection": { "type": "mercator", "center": [134, -26], "scale": 850 },
+  "projection": { "type": "mercator", "center": [134, -26], "scale": 750 },
   "data": {
     "url": "../data/ced_2021.geojson?v=2",
     "format": { "type": "json", "property": "features" }

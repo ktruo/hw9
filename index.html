@@ -10,7 +10,7 @@
   <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.16.3"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.24.0"></script>
 
-  <link rel="stylesheet" href="styles.css?v=4" />
+  <link rel="stylesheet" href="styles.css?v=7" />
   <!-- Inline SVG favicon to avoid 404 for /favicon.ico -->
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' ry='8' fill='%2300447a'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' font-family='Segoe UI, Roboto, Arial' font-size='30' fill='white'%3EAU%3C/text%3E%3C/svg%3E" />
 </head>
@@ -18,8 +18,10 @@
 
   <header class="site-header">
     <div class="wrap">
-      <h1 class="site-title">Australia Votes: A Nation Divided and Engaged</h1>
-      <p class="site-intro">This page brings the 2022 election into focus from several angles: a map of two party preferred results by division, turnout over time by state, a 100% stacked view of seats held by the majors, preference flows from minor parties to <span class="party-alp">Labour</span> or the <span class="party-coalition">Coalition</span>, and a state grid of income brackets by age. Together these views connect geography, participation and party competition. They matter because they translate complex election data into clear, everyday patterns that Australians can read at a glance. The map shows where support is concentrated, turnout trends reveal how engaged different places are, seat shares show who governed with real numbers, preference flows explain how our preferential system shapes final outcomes, and the income–age grid gives social context for those patterns. Sources are official (AEC for election results and ABS for Census data), and the visuals are designed to inform rather than persuade. They should help a general audience make sense of the 2022 result, compare it with recent years, and ask better questions about what changed and why.</p>
+      <section class="viz-section">
+        <h1 class="site-title">Australia Votes: A Nation Divided and Engaged</h1>
+        <p class="site-intro">This page brings the 2022 election into focus from several angles: a map of two party preferred results by division, turnout over time by state, a 100% stacked view of seats held by the majors, preference flows from minor parties to <span class="party-alp">Labour</span> or the <span class="party-coalition">Coalition</span>, and a state grid of income brackets by age. Together these views connect geography, participation and party competition. They matter because they translate complex election data into clear, everyday patterns that Australians can read at a glance. The map shows where support is concentrated, turnout trends reveal how engaged different places are, seat shares show who governed with real numbers, preference flows explain how our preferential system shapes final outcomes, and the income-age grid gives social context for those patterns. Sources are official (AEC for election results and ABS for Census data), and the visuals are designed to inform rather than persuade. They should help a general audience make sense of the 2022 result, compare it with recent years, and ask better questions about what changed and why.</p>
+      </section>
     </div>
   </header>
 
@@ -122,7 +124,7 @@
     "width": 1000,
     "height": 700,
     "background": "white",
-    "projection": { "type": "mercator", "center": [134, -26], "scale": 820 },
+    "projection": { "type": "mercator", "center": [134, -26], "scale": 700 },
 
     "data": {
       "url": "data/ced_2021.geojson?v=2",
@@ -225,8 +227,8 @@
       $schema: "https://vega.github.io/schema/vega-lite/v5.json",
       description: "Preference flows to ALP vs Coalition by minor party (dumbbell).",
       autosize: { type: "fit-x", contains: "padding" },
-      width: "container",
-      height: 480,
+      width: 990,
+      height: 420,
       background: "white",
       data: {
         values: [
@@ -695,7 +697,6 @@
 
 </body>
 </html>
-
 
 
 

@@ -38,11 +38,7 @@ body {
 
 /* Keep the header in a white card, independent of main .wrap background */
 .site-header .wrap {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 16px 18px 20px;
-  box-shadow: var(--shadow);
+  /* Just the central page container (same as main .wrap) */
 }
 
 .site-title {

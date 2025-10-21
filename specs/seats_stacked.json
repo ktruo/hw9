@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "description": "100%-stacked seat share by party (percentage only).",
-  "width": 800,
+  "width": 860,
   "height": 380,
   "background": "white",
   "data": { "url": "../data/seats.csv", "format": { "type": "csv" } },
@@ -16,7 +16,8 @@
       "type": "ordinal",
       "title": "Election year",
       "sort": "ascending",
-      "scale": { "paddingInner": 0.6, "paddingOuter": 0.3 }
+      "scale": { "paddingInner": 0.6, "paddingOuter": 0.3 },
+      "axis": { "labelAngle": 0 }
     },
     "y": {
       "field": "pct",
